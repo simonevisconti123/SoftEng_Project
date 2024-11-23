@@ -15,5 +15,6 @@ public class TestMavenPush {
 public static void main(String[] args) {
         System.out.println("Hello");
         System.out.println("Stampa di prova"); // stampa di prova
+        System.out.println("Stampa di prova 2");
     }
 }
