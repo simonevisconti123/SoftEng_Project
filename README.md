@@ -3,8 +3,8 @@ Realizzazione di una rubrica per la gestione dei contatti telefonici e/o mail.
 
 # 📅 Tasks and deadlines
 - Project setup 🟩 -> 24 novembre
-- Requirements Engineering 🟨 -> 30 novembre
-- Design di dettaglio 🟥 -> 8 dicembre
+- Requirements Engineering 🟩 -> 30 novembre
+- Design di dettaglio 🟨 -> 8 dicembre
 - Implementazione e testing 🟥 -> 15 dicembre
 
 # 👨‍💻 Membri del gruppo
