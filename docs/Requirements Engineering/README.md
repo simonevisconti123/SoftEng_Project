@@ -6,5 +6,5 @@ Steps da effettuare per un corretto download e visualizzazione del documento rel
 4) Aprire il file **Requirements Engineering (GRUPPO 06).html**
 
 ## Note sul documento
-Il file **Requirements Engineering (GRUPPO 06).html** deriva da un export di una versione draft del documento realizzata in notion e 
+Il file **Requirements Engineering (GRUPPO 06).html** deriva da un export di una versione draft del documento realizzata in [notion](https://lateral-saxophone-9f2.notion.site/Requirements-Engineering-GRUPPO-06-150521f0017880beb920ee879805a519) e 
 presenta alcuni elementi interattivi quali i menù con icona triangolare (*toggle*) espandibili all'occorrenza.
