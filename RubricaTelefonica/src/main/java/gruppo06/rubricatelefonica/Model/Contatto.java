@@ -1,5 +1,14 @@
 package gruppo06.rubricatelefonica.Model;
 
+/**
+ * @file Contatto.java
+ * @brief Classe contatto
+ * 
+ * Sono attualmente presenti gli attrubuti nome, cognome, da 1 a 3 numeri di telefono, da 1 a 3 email e un'etichetta
+ * 
+ * @author SimoneVisconti
+ */
+
 public class Contatto {
 
     private String Nome;
@@ -12,6 +21,14 @@ public class Contatto {
 
     private String Etichetta;
 
+    
+    
+    /**
+     * @brief Costruttore del programma
+     * 
+     * Il costruttore del programma, essenziale per istanziare il singolo contatto
+     */
+    
     public Contatto(String Nome, String Cognome, String[] NumeriTelefono, String[] Emails, String Etichetta) {
         this.Nome = Nome;
         this.Cognome = Cognome;
@@ -20,6 +37,15 @@ public class Contatto {
         this.Etichetta = Etichetta;
     }
 
+    /**
+     * @brief Sezione dei metodi get
+     * 
+     * La sezione del programma che seque questo commento è composta dai metodi get dei singoli attributi
+     * 
+     * @return Nome, Cognome, NumeriTelefono, Emails, Etichetta sono i valori ritornati dal programma a valle dell'esecuzione dei metodi
+     */
+    
+    
     public String getNome() {
         return Nome;
     }
@@ -40,6 +66,16 @@ public class Contatto {
         return Etichetta;
     }
 
+    
+    /**
+     * @brief Sezione dei metodi set
+     * 
+     * La sezione del programma che seque questo commento è composta dai metodi set dei singoli attributi
+     * 
+     * @param[in] Nome, Cognome, NumeriTelefono, Emails, Etichetta sono tutti parametri necessari al corretto funzionamento dei metodi
+     */
+    
+    
     public void setNome(String Nome) {
         this.Nome = Nome;
     }
