@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="ClassDiagrams">
+  <ClassDiagramComponents>
+    <Class name="Contatto" package="" visibility="public" xPosition="193.0" yPosition="110.0">
+      <Fields>
+        <Field name="Nome" type="String" visibility="private"/>
+        <Field name="Cognome" type="String" visibility="private"/>
+        <Field name="untitledField" type="Object" visibility="private"/>
+        <Field name="NumeriTelefono" type="String[]" visibility="private"/>
+        <Field name="Emails" type="String[]" visibility="private"/>
+        <Field name="untitledField1" type="Object" visibility="private"/>
+      </Fields>
+      <Constructors/>
+      <Methods/>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations/>
+</ClassDiagram>
