@@ -71,7 +71,7 @@
         </Method>
       </Methods>
     </Class>
-    <Class name="Rubrica" package="" visibility="public" xPosition="208.0" yPosition="438.0">
+    <Class name="Rubrica" package="" visibility="public" xPosition="20.0" yPosition="431.0">
       <Fields>
         <Field name="ListaContatti" type="Object" visibility="private"/>
         <Field name="profilo" type="Profilo" visibility="private"/>
@@ -107,7 +107,7 @@
         <Method name="VisualizzaContatti" returnType="void" visibility="public">
           <Argument type="Object" name="ListaContatti"/>
         </Method>
-        <Method name="untitledMethod" returnType="void" visibility="public"/>
+        <Method name="EsportazioneContatti" returnType="void" visibility="public"/>
       </Methods>
     </Class>
   </ClassDiagramComponents>
