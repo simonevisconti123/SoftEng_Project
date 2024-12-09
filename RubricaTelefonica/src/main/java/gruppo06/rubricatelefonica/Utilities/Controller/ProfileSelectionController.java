@@ -20,14 +20,11 @@ import javafx.fxml.Initializable;
  * @author Anthony
  */
 
-public class ProfileSelectionController implements Initializable {
+public class ProfileSelectionController {
 
-    /**
-     * Initializes the controller class.
-     */
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
+
+    public void TestScritta(){
+        System.out.println("ciao mondo");
+    }
     
 }
