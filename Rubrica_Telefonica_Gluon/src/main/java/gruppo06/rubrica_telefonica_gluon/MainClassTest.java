@@ -32,7 +32,7 @@ public class MainClassTest extends Application{
     }
 
     private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("ProfileSelectionView.fxml"));
         return fxmlLoader.load();
     }
 
