@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<!--
+    @file ProfileSelectionView.fxml
+    @brief Interfaccia utente per la selezione del profilo
+    
+    Questo file contiene la definizione dell'interfaccia grafica relativa 
+    alla dashboard di selezione del profilo. È parte del sistema di gestione 
+    delle view utilizzando il framework JavaFX.
+
+    @author AnthonyVita
+-->
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gruppo06.rubrica_telefonica_gluon.ProfileSelectionController">
+   <children>
+      <HBox prefHeight="600.0" prefWidth="800.0">
+         <children>
+            <Pane fx:id="profileListPane" prefHeight="600.0" prefWidth="726.0">
+               <children>
+                  <MenuButton alignment="CENTER" layoutX="20.0" layoutY="14.0" mnemonicParsing="false" onAction="#inpostaeta" prefHeight="39.0" prefWidth="423.0" text="Lista profili" textAlignment="CENTER">
+                    <items>
+                      <MenuItem fx:id="Profilo1" mnemonicParsing="false" onAction="#TestScritta" text="Action 1" />
+                      <MenuItem mnemonicParsing="false" text="Action 2" />
+                    </items>
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </MenuButton>
+                  <Label fx:id="prova" layoutX="116.0" layoutY="168.0" prefHeight="45.0" prefWidth="176.0" text="Label" />
+                  <Label fx:id="doppiaprova" layoutX="249.0" layoutY="255.0" text="Label" />
+               </children>
+            </Pane>
+            <Pane fx:id="buttonProfilePane" prefHeight="600.0" prefWidth="600.0">
+               <children>
+                  <Button fx:id="scritta" layoutX="104.0" layoutY="120.0" mnemonicParsing="false" onAction="#TestScritta" prefHeight="50.0" prefWidth="130.0" text="Crea profilo" />
+                  <Button fx:id="crea" layoutX="102.0" layoutY="187.0" mnemonicParsing="false" onAction="#ImpostaEta" prefHeight="50.0" prefWidth="130.0" text="Importa profilo" />
+               </children>
+            </Pane>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>
