@@ -26,7 +26,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.4</version>
                 <configuration>
-                    <mainClass>gruppo06.rubrica_telefonica_gluon.App</mainClass>
+                    <mainClass>gruppo06.rubrica_telefonica_gluon.MainClassTest</mainClass>
                 </configuration>
                 <executions>
                     <execution>

@@ -7,6 +7,7 @@ package gruppo06.rubrica_telefonica_gluon;
 
 import java.io.IOException;
 import javafx.application.Application;
+import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -32,7 +33,7 @@ public class MainClassTest extends Application{
     }
 
     private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("ProfileSelectionView.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(MainClassTest.class.getResource("ProfileSelectionView.fxml"));
         return fxmlLoader.load();
     }
 
@@ -42,3 +43,4 @@ public class MainClassTest extends Application{
       launch();
     }
 }
+
