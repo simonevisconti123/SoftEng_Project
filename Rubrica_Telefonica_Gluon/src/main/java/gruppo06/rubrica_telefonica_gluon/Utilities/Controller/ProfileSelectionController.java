@@ -11,6 +11,7 @@
 package gruppo06.rubrica_telefonica_gluon.Utilities.Controller;
 
 import gruppo06.rubrica_telefonica_gluon.*;
+import java.io.*;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -18,12 +19,15 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -51,28 +55,33 @@ public class ProfileSelectionController {
     private Label doppiaprova;
 
     @FXML
-    public void openPopupAction (ActionEvent event){
-        Stage popUpStage = (Stage) buttonProfilePane.getScene().getWindow();
-        
-        Alert.AlertType type = Alert.AlertType.CONFIRMATION;
-        
-        Alert alert = new Alert (type, "");
-        
-        alert.initModality(Modality.APPLICATION_MODAL);
-        alert.initOwner (popUpStage);
-        
-        alert.getDialogPane().setContentText("Test completato");
-        alert.getDialogPane().setHeaderText("FRANCO");
-        
-        Optional<ButtonType> result = alert.showAndWait();
-        if(result.get() == ButtonType.OK)
-        {
-            System.out.println("Ok button pressed");
-        }
-        else if(result.get() == ButtonType.CANCEL)
-        {
-            System.out.println("Cancel button pressed");
+    private void ImportazioneProfilo(ActionEvent event) throws FileNotFoundException, IOException {
+        Stage stage = (Stage) buttonProfilePane.getScene().getWindow();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Importazione profilo");
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        fileChooser.getExtensionFilters().addAll(
+         new ExtensionFilter("Text Files", "*.txt"));
+        File file_scelto = fileChooser.showOpenDialog(stage);
+        if(file_scelto != null){
+            BufferedReader br = new BufferedReader(new FileReader(file_scelto));
+            String st = br.readLine();
+            String[] username_extracted = st.split("= ");
+            
+            if (username_extracted.length > 1) {
+                // Da completare - Simone
+                System.out.println("Il nome profilo è " + username_extracted[1]);
+            } else {
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Errore");
+                alert.setHeaderText("Si è verificato un errore");
+                alert.setContentText("Il file che hai scelto non ha il formato giusto");
+                alert.showAndWait();
+            }
         }
     }
     
+    @FXML
+    private void openPopupAction(ActionEvent event) {
+    }
 }

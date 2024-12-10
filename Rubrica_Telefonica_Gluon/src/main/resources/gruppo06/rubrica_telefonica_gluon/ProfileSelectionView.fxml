@@ -39,8 +39,8 @@
             </Pane>
             <Pane fx:id="buttonProfilePane" prefHeight="600.0" prefWidth="600.0">
                <children>
-                  <Button fx:id="creaProfilo" layoutX="104.0" layoutY="120.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="130.0" text="Crea profilo" onAction="#openPopupAction" />
-                  <Button fx:id="importaProfilo" layoutX="102.0" layoutY="187.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="130.0" text="Importa profilo" />
+                  <Button fx:id="creaProfilo" layoutX="104.0" layoutY="120.0" mnemonicParsing="false" onAction="#openPopupAction" prefHeight="50.0" prefWidth="130.0" text="Crea profilo" />
+                  <Button fx:id="importaProfilo" layoutX="102.0" layoutY="187.0" mnemonicParsing="false" onAction="#ImportazioneProfilo" prefHeight="50.0" prefWidth="130.0" text="Importa profilo" />
                </children>
             </Pane>
          </children>

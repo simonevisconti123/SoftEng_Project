@@ -17,12 +17,12 @@ import javafx.stage.Stage;
  *
  * @author Anthony
  */
-public class MainClassTest extends Application{
+public class MainClass extends Application{
 
     private static Scene scene;
       @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("ProfileSelectionView"), 640, 480);
+        scene = new Scene(loadFXML("ProfileSelectionView"), 800, 600);
         stage.setScene(scene);
         stage.show();
     }
@@ -33,13 +33,12 @@ public class MainClassTest extends Application{
     }
 
     private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(MainClassTest.class.getResource("ProfileSelectionView.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(MainClass.class.getResource("ProfileSelectionView.fxml"));
         return fxmlLoader.load();
     }
 
     
     public static void main(String[] args){
-        System.out.println("FINE");
       launch();
     }
 }
