@@ -3,7 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gruppo06.rubrica_telefonica_gluon;
+package gruppo06.rubrica_telefonica_gluon.Utilities.Controller;
+
+import gruppo06.rubrica_telefonica_gluon.*;
 
 /**
  * @file ShowContactController.java

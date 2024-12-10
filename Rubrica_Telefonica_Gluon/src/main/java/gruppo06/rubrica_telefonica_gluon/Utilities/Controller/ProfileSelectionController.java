@@ -8,8 +8,9 @@
  * @author SimoneVisconti
  */
 
-package gruppo06.rubrica_telefonica_gluon;
+package gruppo06.rubrica_telefonica_gluon.Utilities.Controller;
 
+import gruppo06.rubrica_telefonica_gluon.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -55,9 +56,10 @@ public class ProfileSelectionController {
         doppiaprova.setText("forse abbiamo risolto");
     }
 
+  
+
     @FXML
-    private void impostaeta(MouseEvent event) {
-        prova.setText("forse non ci siamo");
+    private void inpostaeta(ActionEvent event) {
     }
     
     

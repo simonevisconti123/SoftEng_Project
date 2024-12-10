@@ -18,7 +18,7 @@
     @author AnthonyVita
 -->
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gruppo06.rubrica_telefonica_gluon.ProfileSelectionController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gruppo06.rubrica_telefonica_gluon.Utilities.Controller.ProfileSelectionController">
    <children>
       <HBox prefHeight="600.0" prefWidth="800.0">
          <children>

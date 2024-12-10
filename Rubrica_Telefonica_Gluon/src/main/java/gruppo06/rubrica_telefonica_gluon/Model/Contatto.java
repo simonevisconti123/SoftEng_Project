@@ -1,4 +1,6 @@
-package gruppo06.rubrica_telefonica_gluon;
+package gruppo06.rubrica_telefonica_gluon.Model;
+
+import gruppo06.rubrica_telefonica_gluon.*;
 
 
 /**
