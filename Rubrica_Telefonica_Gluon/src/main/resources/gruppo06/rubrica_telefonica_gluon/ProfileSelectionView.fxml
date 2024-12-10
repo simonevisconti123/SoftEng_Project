@@ -18,15 +18,15 @@
     @author AnthonyVita
 -->
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gruppo06.rubrica_telefonica_gluon.Utilities.Controller.ShowContactController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gruppo06.rubrica_telefonica_gluon.Utilities.Controller.ProfileSelectionController">
    <children>
       <HBox prefHeight="600.0" prefWidth="800.0">
          <children>
             <Pane fx:id="profileListPane" prefHeight="600.0" prefWidth="726.0">
                <children>
-                  <MenuButton alignment="CENTER" layoutX="20.0" layoutY="14.0" mnemonicParsing="false" onAction="#inpostaeta" prefHeight="39.0" prefWidth="423.0" text="Lista profili" textAlignment="CENTER">
+                  <MenuButton alignment="CENTER" layoutX="20.0" layoutY="14.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="423.0" text="Lista profili" textAlignment="CENTER">
                     <items>
-                      <MenuItem fx:id="Profilo1" mnemonicParsing="false" onAction="#TestScritta" text="Action 1" />
+                      <MenuItem fx:id="Profilo1" mnemonicParsing="false" text="Action 1" />
                       <MenuItem mnemonicParsing="false" text="Action 2" />
                     </items>
                      <font>
@@ -39,8 +39,8 @@
             </Pane>
             <Pane fx:id="buttonProfilePane" prefHeight="600.0" prefWidth="600.0">
                <children>
-                  <Button fx:id="scritta" layoutX="104.0" layoutY="120.0" mnemonicParsing="false" onAction="#TestScritta" prefHeight="50.0" prefWidth="130.0" text="Crea profilo" />
-                  <Button fx:id="crea" layoutX="102.0" layoutY="187.0" mnemonicParsing="false" onAction="#ImpostaEta" prefHeight="50.0" prefWidth="130.0" text="Importa profilo" />
+                  <Button fx:id="creaProfilo" layoutX="104.0" layoutY="120.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="130.0" text="Crea profilo" onAction="#openPopupAction" />
+                  <Button fx:id="importaProfilo" layoutX="102.0" layoutY="187.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="130.0" text="Importa profilo" />
                </children>
             </Pane>
          </children>

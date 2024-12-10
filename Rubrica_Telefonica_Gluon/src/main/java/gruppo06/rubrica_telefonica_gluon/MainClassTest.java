@@ -22,7 +22,7 @@ public class MainClassTest extends Application{
     private static Scene scene;
       @Override
     public void start(Stage stage) throws IOException {
-         scene = new Scene(loadFXML("ProfileSelectionView"), 640, 480);
+        scene = new Scene(loadFXML("ProfileSelectionView"), 640, 480);
         stage.setScene(scene);
         stage.show();
     }
@@ -39,7 +39,7 @@ public class MainClassTest extends Application{
 
     
     public static void main(String[] args){
-        System.out.println("uauuauauau");
+        System.out.println("FINE");
       launch();
     }
 }
