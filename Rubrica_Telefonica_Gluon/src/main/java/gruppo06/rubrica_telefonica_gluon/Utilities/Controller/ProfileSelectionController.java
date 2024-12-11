@@ -26,6 +26,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
@@ -43,7 +44,7 @@ import javafx.stage.Stage;
  * @author Anthony
  */
 
-public class ProfileSelectionController {
+public class ProfileSelectionController implements Initializable{
 
     @FXML
     private Pane profileListPane;
@@ -59,7 +60,15 @@ public class ProfileSelectionController {
     private Button creaProfilo;
     @FXML
     private Label doppiaprova;
+    @FXML
+    private ComboBox<String> ListaProf;
 
+    
+        @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        showProfile(); // Chiamata per popolare la ComboBox all'avvio
+    }
+    
     @FXML
     private void ImportazioneProfilo(ActionEvent event) throws FileNotFoundException, IOException {
         Stage stage = (Stage) buttonProfilePane.getScene().getWindow();
@@ -162,7 +171,43 @@ public class ProfileSelectionController {
                 e.printStackTrace();
                 System.out.println("Errore nella creazione del file.");
             }
+            ListaProf.getItems().clear();
+            showProfile(); 
         }
     }
     }
+    
+    @FXML
+    public void showProfile(){
+    String userDir = System.getProperty("user.dir");
+            System.out.println(userDir);
+            String path=userDir+"/src/main/resources/ProfiliSalvati/";
+            System.out.println(path);
+
+        // Specificare la directory da cui leggere i file
+        File directory = new File(path); // Sostituisci con il percorso della tua directory
+
+        // Controllare che la directory esista ed è una cartella
+        if (directory.exists() && directory.isDirectory()) {
+            // Leggere i file della directory
+            File[] files = directory.listFiles();
+            if (files != null) {
+                for (File file : files) {
+                    if (file.isFile()) {
+                      // Aggiungere solo i file, non le sottocartelle
+                        ListaProf.getItems().add(file.getName());
+                    }
+                   
+                }
+            }
+        } else {
+            System.out.println("La directory specificata non esiste o non è una cartella.");
+        }
+        ListaProf.setOnAction(e -> {
+    String selectedFile = ListaProf.getValue();
+});
+}
+
+    
+    
 }                                                               

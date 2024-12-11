@@ -35,6 +35,7 @@
                   </MenuButton>
                   <Label fx:id="prova" layoutX="116.0" layoutY="168.0" prefHeight="45.0" prefWidth="176.0" text="Label" />
                   <Label fx:id="doppiaprova" layoutX="249.0" layoutY="255.0" text="Label" />
+                  <ComboBox fx:id="ListaProf" layoutX="129.0" layoutY="96.0" onAction="#showProfile" prefWidth="150.0" promptText="Lista profili" />
                </children>
             </Pane>
             <Pane fx:id="buttonProfilePane" prefHeight="600.0" prefWidth="600.0">
