@@ -104,6 +104,8 @@ public class ProfileSelectionController implements Initializable{
                 alert.showAndWait();
             }
         }
+         ListaProf.getItems().clear();
+            showProfile(); 
     }
     
     @FXML
