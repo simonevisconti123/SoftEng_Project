@@ -14,6 +14,7 @@ import gruppo06.rubrica_telefonica_gluon.*;
 import java.awt.Insets;
 import java.io.*;
 import java.net.URL;
+import java.nio.file.*;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -69,13 +70,23 @@ public class ProfileSelectionController {
          new ExtensionFilter("Text Files", "*.txt"));
         File file_scelto = fileChooser.showOpenDialog(stage);
         if(file_scelto != null){
-            BufferedReader br = new BufferedReader(new FileReader(file_scelto));
-            String st = br.readLine();
+            String st;
+            try(BufferedReader br = new BufferedReader(new FileReader(file_scelto))){
+                st = br.readLine();
+            }
             String[] username_extracted = st.split("= ");
             
             if (username_extracted.length > 1) {
-                // Da completare - Simone
-                System.out.println("Il nome profilo è " + username_extracted[1]);
+                
+                String userDir = System.getProperty("user.dir");
+                File cartella_destinazione = new File(userDir, "/src/main/resources/ProfiliSalvati/");
+                
+                if (!cartella_destinazione.exists()) {
+                    cartella_destinazione.mkdirs();
+                }
+                
+                Files.move(file_scelto.toPath(), cartella_destinazione.toPath().resolve(file_scelto.getName()), StandardCopyOption.REPLACE_EXISTING);
+                
             } else {
                 Alert alert = new Alert(AlertType.ERROR);
                 alert.setTitle("Errore");
@@ -135,8 +146,9 @@ public class ProfileSelectionController {
     }
     
     // Specifica il percorso della cartella dove vuoi salvare il file
-            String folderPath = "C:/Users/Anthony/Documents/NetBeansProjects/SoftEng_Project/Rubrica_Telefonica_Gluon/src/main/resources/ProfiliSalvati"; // Personalizza questo percorso
-            File folder = new File(folderPath);
+            String userDir = System.getProperty("user.dir");
+            System.out.println(userDir);
+            File folder = new File(userDir, "/src/main/resources/ProfiliSalvati/");
             if (!folder.exists()) {
                 System.out.println("La cartella non esiste");
             }
@@ -145,8 +157,7 @@ public class ProfileSelectionController {
             File file = new File(folder, username + ".txt");
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
                 // Scrivi la riga "username=<usernameInserito>"
-                writer.write("username= " + username);
-                System.out.println("File creato: " + file.getAbsolutePath());
+                writer.write("Username = " + username);
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("Errore nella creazione del file.");
