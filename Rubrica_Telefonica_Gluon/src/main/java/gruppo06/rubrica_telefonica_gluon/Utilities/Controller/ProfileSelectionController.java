@@ -134,34 +134,35 @@ public class ProfileSelectionController {
     // Gestisci il risultato
     Optional<ButtonType> result = usernameAlert.showAndWait();
     String username = null;
+    
+    
+    
+    
+    
+    
     if (result.isPresent() && result.get() == okButton) {
         username = usernameField.getText().trim();
         if (username.isEmpty()) {
-            System.out.println("Nessun username inserito.");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Errore di validazione");
+            alert.setHeaderText("Campo obbligatorio");
+            alert.setContentText("Il campo di testo non può essere vuoto!");
+            alert.showAndWait();
         } else {
-            System.out.println("Username inserito: " + username);
-        }
-    } else {
-        System.out.println("Operazione annullata.");
-    }
-    
-    // Specifica il percorso della cartella dove vuoi salvare il file
             String userDir = System.getProperty("user.dir");
-            System.out.println(userDir);
             File folder = new File(userDir, "/src/main/resources/ProfiliSalvati/");
             if (!folder.exists()) {
-                System.out.println("La cartella non esiste");
+                folder.mkdirs();
             }
-            
-     // Crea un file con il nome dello username
+                 
             File file = new File(folder, username + ".txt");
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-                // Scrivi la riga "username=<usernameInserito>"
                 writer.write("Username = " + username);
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("Errore nella creazione del file.");
             }
-
-    } //1)AGGIUNGERE EXCEPTION QUANDO CAMPO USERNAME LASCIATO VUOTO (attualmente crea file txt vuoto)
-}     //2)AGGIUNGERE UN PATH CORRETTO ALLA FOLDER "ProfiliSalvati"                                                                
+        }
+    }
+    }
+}                                                               
