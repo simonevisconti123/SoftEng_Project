@@ -51,17 +51,13 @@ public class ProfileSelectionController implements Initializable{
     @FXML
     private Pane buttonProfilePane;
     @FXML
-    private MenuItem Profilo1;
-    @FXML
     private Button importaProfilo;
-    @FXML
-    private Label prova;
     @FXML
     private Button creaProfilo;
     @FXML
-    private Label doppiaprova;
-    @FXML
     private ComboBox<String> ListaProf;
+    @FXML
+    private Button SwitchCode;
 
     
         @Override
@@ -216,6 +212,11 @@ public class ProfileSelectionController implements Initializable{
     String selectedFile = ListaProf.getValue();
 });
 }
+
+    @FXML
+    private void SwitchPage(ActionEvent event) throws IOException {
+        MainClass.setRoot("DashboardView");
+    }
 
     
     

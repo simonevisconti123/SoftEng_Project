@@ -26,6 +26,7 @@
             <Pane fx:id="profileListPane" prefHeight="600.0" prefWidth="726.0">
                <children>
                   <ComboBox fx:id="ListaProf" layoutX="31.0" layoutY="32.0" onAction="#showProfile" prefHeight="61.0" prefWidth="337.0" promptText="Lista profili" />
+                  <Button fx:id="SwitchCode" layoutX="186.0" layoutY="122.0" mnemonicParsing="false" onAction="#SwitchPage" prefHeight="21.0" prefWidth="122.0" text="Button" />
                </children>
             </Pane>
             <Pane fx:id="buttonProfilePane" prefHeight="600.0" prefWidth="600.0">
