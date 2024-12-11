@@ -195,9 +195,16 @@ public class ProfileSelectionController implements Initializable{
                 for (File file : files) {
                     if (file.isFile()) {
                       // Aggiungere solo i file, non le sottocartelle
-                        ListaProf.getItems().add(file.getName());
-                    }
-                   
+                      String fileNameWithoutExtension = file.getName();
+                        int dotIndex = fileNameWithoutExtension.lastIndexOf(".");
+                        if (dotIndex > 0) {
+                            fileNameWithoutExtension = fileNameWithoutExtension.substring(0, dotIndex);
+                        }
+                          ListaProf.getItems().add(fileNameWithoutExtension);
+                    
+}
+
+// Aggiungi il nome del file senza estensione alla Combobox    
                 }
             }
         } else {

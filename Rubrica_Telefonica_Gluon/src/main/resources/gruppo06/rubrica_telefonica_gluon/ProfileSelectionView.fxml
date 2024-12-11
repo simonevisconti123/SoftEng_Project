@@ -24,18 +24,7 @@
          <children>
             <Pane fx:id="profileListPane" prefHeight="600.0" prefWidth="726.0">
                <children>
-                  <MenuButton alignment="CENTER" layoutX="20.0" layoutY="14.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="423.0" text="Lista profili" textAlignment="CENTER">
-                    <items>
-                      <MenuItem fx:id="Profilo1" mnemonicParsing="false" text="Action 1" />
-                      <MenuItem mnemonicParsing="false" text="Action 2" />
-                    </items>
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </MenuButton>
-                  <Label fx:id="prova" layoutX="116.0" layoutY="168.0" prefHeight="45.0" prefWidth="176.0" text="Label" />
-                  <Label fx:id="doppiaprova" layoutX="249.0" layoutY="255.0" text="Label" />
-                  <ComboBox fx:id="ListaProf" layoutX="129.0" layoutY="96.0" onAction="#showProfile" prefWidth="150.0" promptText="Lista profili" />
+                  <ComboBox fx:id="ListaProf" layoutX="31.0" layoutY="32.0" onAction="#showProfile" prefHeight="61.0" prefWidth="337.0" promptText="Lista profili" />
                </children>
             </Pane>
             <Pane fx:id="buttonProfilePane" prefHeight="600.0" prefWidth="600.0">
