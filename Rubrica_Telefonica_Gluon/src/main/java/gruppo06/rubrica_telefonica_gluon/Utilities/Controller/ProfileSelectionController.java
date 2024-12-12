@@ -219,7 +219,4 @@ public class ProfileSelectionController implements Initializable{
     private void SwitchPage(ActionEvent event) throws IOException {
         MainClass.setRoot("DashboardView");
     }
-String nome_Profilo;
-    Rubrica r=new Rubrica();
-    Profilo p=new Profilo(nome_Profilo,r);
 }                                                               
