@@ -11,6 +11,8 @@
 package gruppo06.rubrica_telefonica_gluon.Utilities.Controller;
 
 import gruppo06.rubrica_telefonica_gluon.*;
+import gruppo06.rubrica_telefonica_gluon.Model.Profilo;
+import gruppo06.rubrica_telefonica_gluon.Model.Rubrica;
 import java.awt.Insets;
 import java.io.*;
 import java.net.URL;
@@ -217,7 +219,7 @@ public class ProfileSelectionController implements Initializable{
     private void SwitchPage(ActionEvent event) throws IOException {
         MainClass.setRoot("DashboardView");
     }
-
-    
-    
+String nome_Profilo;
+    Rubrica r=new Rubrica();
+    Profilo p=new Profilo(nome_Profilo,r);
 }                                                               
