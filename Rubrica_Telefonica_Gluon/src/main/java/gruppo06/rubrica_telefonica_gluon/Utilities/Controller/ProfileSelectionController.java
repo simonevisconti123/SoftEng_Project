@@ -48,6 +48,7 @@ import javafx.stage.Stage;
 
 public class ProfileSelectionController implements Initializable{
 
+    //ELEMENTI GRAFICI
     @FXML
     private Pane profileListPane;
     @FXML
@@ -59,16 +60,19 @@ public class ProfileSelectionController implements Initializable{
     @FXML
     private ComboBox<String> ListaProf;
     @FXML
-    private Button SwitchCode;
+    private Button selezionaProfiloButton;
 
+    //ATTRIBUTI
+    private final String folderDataSharing = System.getProperty("user.dir") + "/src/main/resources/DataSharing/";
     
-        @Override
+    //METODI DI CONTROLLO
+    @Override
     public void initialize(URL location, ResourceBundle resources) {
         showProfile(); // Chiamata per popolare la ComboBox all'avvio
     }
     
     @FXML
-    private void ImportazioneProfilo(ActionEvent event) throws FileNotFoundException, IOException {
+    private void importazioneProfilo(ActionEvent event) throws FileNotFoundException, IOException {
         Stage stage = (Stage) buttonProfilePane.getScene().getWindow();
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Importazione profilo");
@@ -107,7 +111,7 @@ public class ProfileSelectionController implements Initializable{
     }
     
     @FXML
-    private void CreazioneProfilo (ActionEvent event) {
+    private void creazioneProfilo (ActionEvent event) {
     // Ottieni il riferimento alla finestra principale
     Stage parentStage = (Stage) buttonProfilePane.getScene().getWindow();
 
@@ -143,11 +147,6 @@ public class ProfileSelectionController implements Initializable{
     // Gestisci il risultato
     Optional<ButtonType> result = usernameAlert.showAndWait();
     String username = null;
-    
-    
-    
-    
-    
     
     if (result.isPresent() && result.get() == okButton) {
         username = usernameField.getText().trim();
@@ -216,7 +215,45 @@ public class ProfileSelectionController implements Initializable{
 }
 
     @FXML
-    private void SwitchPage(ActionEvent event) throws IOException {
+    public void selezionaProfilo(ActionEvent event) throws IOException {
+        
+        //SALVATAGGIO SCELTE UTENTE SU FILE
+        // Verifica che l'utente abbia selezionato qualcosa
+        String sceltaUtente = ListaProf.getSelectionModel().getSelectedItem();
+
+        if (sceltaUtente == null || sceltaUtente.isEmpty()) {
+            System.out.println("Nessun profilo selezionato");
+            return;
+        }
+        
+        //messaggi sulla console
+        System.out.println("\n" + "DASHBOARD_CONTROLLER");
+        System.out.println("Profilo selezionato: " + sceltaUtente);
+        
+        //SALVATAGGIO SCELTA SU FILE
+        System.out.println("scrittura username del profilo selezionato sul file _profileFileSelection");
+        DataShare("profileSelectionFile", sceltaUtente);
+        
+        //PASSAGGIO ALLA PROSSIMA VIEW
+        System.out.println("\n" + "PASSAGGIO CONTROLLI A DASHBOARD CONTROLLER PER INIZIALIZZAZIONE");
         MainClass.setRoot("DashboardView");
+        
+        System.out.println("Inizializzazione del DashboardController completata");
     }
-}                                                               
+    
+    //METODI UTILITIES
+    public void DataShare(String fileName, String dataToSave){
+        //determina il filePath del DataSharingFile su cui dobbiamo scrivere
+        String filePath = folderDataSharing + fileName;
+        
+        // Scrivi la selezione dell'utente nel file
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File(filePath), true))) {
+            writer.write("Profilo selezionato: " + dataToSave);
+            writer.newLine(); // Aggiunge una nuova linea
+            System.out.println("Selezione salvata con successo in " + filePath);
+        } catch (IOException e) {
+            System.err.println("Errore durante il salvataggio della selezione: " + e.getMessage());
+        }
+    }
+}                                                             
+

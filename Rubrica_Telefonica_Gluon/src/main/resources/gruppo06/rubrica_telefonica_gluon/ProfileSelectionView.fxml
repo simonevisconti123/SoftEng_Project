@@ -26,13 +26,13 @@
             <Pane fx:id="profileListPane" prefHeight="600.0" prefWidth="726.0">
                <children>
                   <ComboBox fx:id="ListaProf" layoutX="31.0" layoutY="32.0" onAction="#showProfile" prefHeight="61.0" prefWidth="337.0" promptText="Lista profili" />
-                  <Button fx:id="SwitchCode" layoutX="186.0" layoutY="122.0" mnemonicParsing="false" onAction="#SwitchPage" prefHeight="21.0" prefWidth="122.0" text="Button" />
+                  <Button fx:id="selezionaProfiloButton" layoutX="186.0" layoutY="122.0" mnemonicParsing="false" onAction="#selezionaProfilo" prefHeight="21.0" prefWidth="122.0" text="Conferma" />
                </children>
             </Pane>
             <Pane fx:id="buttonProfilePane" prefHeight="600.0" prefWidth="600.0">
                <children>
-                  <Button fx:id="creaProfilo" layoutX="104.0" layoutY="120.0" mnemonicParsing="false" onAction="#CreazioneProfilo" prefHeight="50.0" prefWidth="130.0" text="Crea profilo" />
-                  <Button fx:id="importaProfilo" layoutX="102.0" layoutY="187.0" mnemonicParsing="false" onAction="#ImportazioneProfilo" prefHeight="50.0" prefWidth="130.0" text="Importa profilo" />
+                  <Button fx:id="creaProfilo" layoutX="104.0" layoutY="120.0" mnemonicParsing="false" onAction="#creazioneProfilo" prefHeight="50.0" prefWidth="130.0" text="Crea profilo" />
+                  <Button fx:id="importaProfilo" layoutX="102.0" layoutY="187.0" mnemonicParsing="false" onAction="#importazioneProfilo" prefHeight="50.0" prefWidth="130.0" text="Importa profilo" />
                </children>
             </Pane>
          </children>
