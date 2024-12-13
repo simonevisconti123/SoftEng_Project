@@ -64,11 +64,13 @@ public class ProfileSelectionController implements Initializable{
 
     //ATTRIBUTI
     private final String folderDataSharing = System.getProperty("user.dir") + "/src/main/resources/DataSharing/";
+    private String pathProfiloSelezionato;
     
     //METODI DI CONTROLLO
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         showProfile(); // Chiamata per popolare la ComboBox all'avvio
+        System.out.println("\n" + "PROFILE_SELECTION_CONTROLLER");
     }
     
     @FXML
@@ -179,9 +181,7 @@ public class ProfileSelectionController implements Initializable{
     @FXML
     public void showProfile(){
     String userDir = System.getProperty("user.dir");
-            System.out.println(userDir);
             String path=userDir+"/src/main/resources/ProfiliSalvati/";
-            System.out.println(path);
 
         // Specificare la directory da cui leggere i file
         File directory = new File(path); // Sostituisci con il percorso della tua directory
@@ -200,19 +200,16 @@ public class ProfileSelectionController implements Initializable{
                             fileNameWithoutExtension = fileNameWithoutExtension.substring(0, dotIndex);
                         }
                           ListaProf.getItems().add(fileNameWithoutExtension);
-                    
-}
+                    }
 
-// Aggiungi il nome del file senza estensione alla Combobox    
+        // Aggiungi il nome del file senza estensione alla Combobox    
                 }
             }
         } else {
-            System.out.println("La directory specificata non esiste o non è una cartella.");
-        }
-        ListaProf.setOnAction(e -> {
-    String selectedFile = ListaProf.getValue();
-});
-}
+                System.out.println("La directory specificata non esiste o non è una cartella.");
+               }
+        ListaProf.setOnAction(e -> {String selectedFile = ListaProf.getValue();});
+    }
 
     @FXML
     public void selezionaProfilo(ActionEvent event) throws IOException {
@@ -220,6 +217,7 @@ public class ProfileSelectionController implements Initializable{
         //SALVATAGGIO SCELTE UTENTE SU FILE
         // Verifica che l'utente abbia selezionato qualcosa
         String sceltaUtente = ListaProf.getSelectionModel().getSelectedItem();
+        pathProfiloSelezionato = System.getProperty("user.dir") + "/src/main/resources/profiliSalvati/" + sceltaUtente + ".txt";
 
         if (sceltaUtente == null || sceltaUtente.isEmpty()) {
             System.out.println("Nessun profilo selezionato");
@@ -227,32 +225,32 @@ public class ProfileSelectionController implements Initializable{
         }
         
         //messaggi sulla console
-        System.out.println("\n" + "DASHBOARD_CONTROLLER");
         System.out.println("Profilo selezionato: " + sceltaUtente);
+        System.out.println("path del profilo selezionato: " + pathProfiloSelezionato);
         
         //SALVATAGGIO SCELTA SU FILE
-        System.out.println("scrittura username del profilo selezionato sul file _profileFileSelection");
-        DataShare("profileSelectionFile", sceltaUtente);
+        System.out.println("scrittura path del profilo selezionato sul file _profileFileSelection.txt_");
+        DataShare("profileSelectionFile", pathProfiloSelezionato, "Path del profilo selezionato: ");
         
         //PASSAGGIO ALLA PROSSIMA VIEW
-        System.out.println("\n" + "PASSAGGIO CONTROLLI A DASHBOARD CONTROLLER PER INIZIALIZZAZIONE");
+        System.out.println("->" + "Passaggio controlli a dashboardController per inizializzazione");
         MainClass.setRoot("DashboardView");
         
         System.out.println("Inizializzazione del DashboardController completata");
     }
     
     //METODI UTILITIES
-    public void DataShare(String fileName, String dataToSave){
+    public void DataShare(String fileName, String dataToSave, String msg){
         //determina il filePath del DataSharingFile su cui dobbiamo scrivere
-        String filePath = folderDataSharing + fileName;
+        String filePath = folderDataSharing + fileName + ".txt";
         
         // Scrivi la selezione dell'utente nel file
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File(filePath), true))) {
-            writer.write("Profilo selezionato: " + dataToSave);
+            writer.write(msg + dataToSave);
             writer.newLine(); // Aggiunge una nuova linea
-            System.out.println("Selezione salvata con successo in " + filePath);
+            System.out.println("Dato aggiunto con successo in: " + filePath);
         } catch (IOException e) {
-            System.err.println("Errore durante il salvataggio della selezione: " + e.getMessage());
+            System.err.println("Errore durante il salvataggio del dato: " + e.getMessage());
         }
     }
 }                                                             

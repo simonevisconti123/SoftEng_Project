@@ -58,38 +58,36 @@ public class DashboardController implements Initializable {
     private String pathProfiloCaricato;
     
     //METODI DI CONTROLLO
-    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
        
-        //LETTURA DEL NOME DA FILE
+        System.out.println("\nDASHBOARD_CONTROLLER");
+        //LETTURA DEL PATH DEL PROFILO DAL FILE DI COMUNICAZIONE DEI CONTROLLER
         // Specifica il percorso del file da leggere, che è il file presente nella cartella resources/DataSharing/profileSelectionFile
-        String profileSelectionFilePath = this.folderDataSharing + "profileSelectionFile";
+        String profileSelectionFilePath = this.folderDataSharing + "profileSelectionFile.txt";
         
-        // Leggi il nome dal file
-        usernameProfilo = leggiNomeDalFile(profileSelectionFilePath);
+        // Leggi pathProfiloCaricato dal file
+        pathProfiloCaricato = leggiPathDaFile(profileSelectionFilePath);
         
         // Stampa il nome sulla console
-        if (usernameProfilo != null) {
-            System.out.println("DashboardController-> Profilo letto da file: " + usernameProfilo);
+        if (pathProfiloCaricato != null) {
+            System.out.println("Profilo letto da file: " + pathProfiloCaricato);
         } else {
-            System.out.println("Nessun nome trovato nel file.");
-            return; //AGGIUNGERE MESSAGGIO ERRORE
+            System.out.println("Nessun path trovato nel file.");
+            return;
         }
         
-        //RICERCA DEL PROFILO
-        //trova il path del file relativo al profilo cercato
-        pathProfiloCaricato = profileFileSearch(this.usernameProfilo, this.folderProfiles);
-        System.out.println("username_profilo=" + this.usernameProfilo + " --- path_Profilo=" + this.pathProfiloCaricato);
-        
         //CREAZIONE OGGETTI DEL MODEL RELATIVI AL PROFILO
+        usernameProfilo = this.estraiUsernameProfiloDaFile(pathProfiloCaricato);
+        System.out.println("USERNAME PROFILO: " + usernameProfilo);
         
         //VISUALIZZAZIONE DELLA RUBRICA RELATIVA AL PROFILO
         
         //SVUOTAMENTO FILE "profileSelectionFile"
         svuotaFile(profileSelectionFilePath);
     }
-
+    
+    @FXML
     public void cambiaProfilo(ActionEvent event) throws IOException {
         MainClass.setRoot("ProfileSelectionView");
     }
@@ -109,19 +107,19 @@ public class DashboardController implements Initializable {
     
     //METODI UTILITIES
     /**
-     * Metodo per leggere il nome dal file.
-     * @param filePath Il percorso del file da leggere
+     * Metodo per estrarre lo username del profilo dal file.txt.
+     * @param filePath Il percorso del file da cui estrarre l'username
      * @return Il nome letto dal file, o null se non trovato
      */
-    private String leggiNomeDalFile(String filePath) {
+    private String leggiPathDaFile(String filePath) {
         File file = new File(filePath);
         StringBuilder nome = new StringBuilder();
 
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                if (line.startsWith("Profilo selezionato: ")) {
-                    nome.append(line.substring("Profilo selezionato: ".length()).trim());
+                if (line.startsWith("Path del profilo selezionato: ")) {
+                    nome.append(line.substring("Path del profilo selezionato: ".length()).trim());
                 }
             }
         } catch (IOException e) {
@@ -144,53 +142,25 @@ public class DashboardController implements Initializable {
         }
     }
     
-             /**
-     * Cerca un file nella cartella specificata che contenga lo username fornito nella prima riga.
-     * @param usernameProfilo Lo username da cercare.
-     * @param folder Il percorso della cartella dove effettuare la ricerca.
-     * @return Il path del file che contiene lo username, oppure null se non trovato.
-     */
-    public String profileFileSearch(String usernameProfilo, String folder){
-
-        File directory = new File(folder);
-
-        // Controlla se la cartella esiste ed è una directory
-        if (!directory.exists() || !directory.isDirectory()) {
-            System.out.println("Il percorso specificato non è una cartella valida.");
-            return null;
-        }
-
-        // Itera su tutti i file nella directory
-        int n=0;
-        for (File file : directory.listFiles()) {
-            n=n+1;
-            System.out.println("\nfile " + n + " ispezionato"); //messaggio console
-            
-            if (file.isFile()) { // Ignora eventuali sottocartelle
-                try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+    public String estraiUsernameProfiloDaFile(String profileFilePath){
+        String username = null;
+        
+        try (BufferedReader reader = new BufferedReader(new FileReader(profileFilePath))) {
                     String primaRiga = reader.readLine(); // Legge solo la prima riga
-                    System.out.println(primaRiga);
                     
                     // Verifica se la riga contiene il formato richiesto
                     if (primaRiga != null && primaRiga.startsWith("Username = ")) {
-                    String username = primaRiga.substring("Username = ".length()).trim();
-                        
-                        // Confronta con il nome utente ricercato
-                        if (usernameProfilo.equals(username)) {
-                            System.out.println("username trovato: " + username + "\n");
-                            return this.folderProfiles + file.getName(); // Restituisce il nome del file trovato
-                        }
+                    username = primaRiga.substring("Username = ".length()).trim();
                     }
-                } catch (IOException e) {
-                    System.err.println("Errore durante la lettura del file: " + file.getName());
-                    e.printStackTrace();
-                }
-            }
+        } catch (IOException e) {
+        System.err.println("Errore durante la lettura del file");
+        e.printStackTrace();
         }
-        return null;
-    }
+        
+        return username;
+        }    
     
-    public void profileDataLoader(String pathProfiloCaricato){
+    public void estraiContattoDaFile(String pathProfiloCaricato, int n){
         //deve leggere le righe del file del profilo e salvarne i contatti in oggetti per poi salvare tali oggetti nella rubrica del profilo
     }
 }
