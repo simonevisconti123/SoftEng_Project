@@ -1,1 +1,7 @@
 Username = Giosuè
+
+Mario,Rossi,123456789|987654321,mario.rossi@example.com|mario.rossi@work.com,Amico
+Luigi,Bianchi,555123456,luigi.bianchi@example.com,Collega
+Anna,Verdi,111222333,anna.verdi@example.com,Famiglia
+Paolo,Neri,333444555,paolo.neri@example.com,Conoscente
+Paolooo,Nerio,333444555,paolo.neri@example.com,Conoscente

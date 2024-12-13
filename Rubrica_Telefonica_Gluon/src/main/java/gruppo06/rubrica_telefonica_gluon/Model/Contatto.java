@@ -1,6 +1,8 @@
 package gruppo06.rubrica_telefonica_gluon.Model;
 
 import gruppo06.rubrica_telefonica_gluon.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -18,9 +20,9 @@ public class Contatto {
 
     private String Cognome;
 
-    private String[] NumeriTelefono;
+    private List<String> NumeriTelefono;
 
-    private String[] Emails;
+    private List<String> Emails;
 
     private String Etichetta;
 
@@ -32,13 +34,17 @@ public class Contatto {
      * Il costruttore del programma, essenziale per istanziare il singolo contatto
      */
     
-    public Contatto(String Nome, String Cognome, String[] NumeriTelefono, String[] Emails, String Etichetta) {
-        this.Nome = Nome;
+ 
+
+    public Contatto(String nome, String cognome, List<String> numeriTelefono, List<String> Emails, String etichetta) {
+         this.Nome = Nome;
         this.Cognome = Cognome;
-        this.NumeriTelefono = NumeriTelefono;
-        this.Emails = Emails;
+            this.NumeriTelefono = numeriTelefono != null ? numeriTelefono : new ArrayList<>();
+    this.Emails =Emails != null ? Emails : new ArrayList<>();
         this.Etichetta = Etichetta;
     }
+
+    
 
     /**
      * @brief Sezione dei metodi get
@@ -57,11 +63,11 @@ public class Contatto {
         return Cognome;
     }
 
-    public String[] getNumeriTelefono() {
+    public List<String> getNumeriTelefono() {
         return NumeriTelefono;
     }
 
-    public String[] getEmails() {
+    public List<String> getEmails() {
         return Emails;
     }
 
@@ -87,16 +93,21 @@ public class Contatto {
         this.Cognome = Cognome;
     }
 
-    public void setNumeriTelefono(String[] NumeriTelefono) {
+    public void setNumeriTelefono(List<String> NumeriTelefono) {
         this.NumeriTelefono = NumeriTelefono;
     }
 
-    public void setEmails(String[] Emails) {
+    public void setEmails(List<String> Emails) {
         this.Emails = Emails;
     }
 
     public void setEtichetta(String Etichetta) {
         this.Etichetta = Etichetta;
     }
-}
 
+    @Override
+    public String toString() {
+        return "Contatto{" + "Nome=" + this.getNome() + ", Cognome=" + this.getCognome() + ", NumeriTelefono=" + this.getNumeriTelefono() + ", Emails=" + this.getEmails() + ", Etichetta=" + this.getEtichetta() + "}\n";
+    }
+    
+}

@@ -1,7 +1,7 @@
-
 package gruppo06.rubrica_telefonica_gluon.Model;
 
 import gruppo06.rubrica_telefonica_gluon.*;
+import java.util.TreeMap;
 
 
 /**
@@ -15,9 +15,9 @@ import gruppo06.rubrica_telefonica_gluon.*;
 
 public class Rubrica {
 
-    private Object ListaContatti;
+    private TreeMap<String, Contatto> listaContatti= new TreeMap<>();
 
-    private Profilo profilo;
+   
 
     /**
      * @brief Costruttore del programma
@@ -25,7 +25,9 @@ public class Rubrica {
      * Il costruttore del programma, essenziale per istanziare la rubrica
      */
     
-    public Rubrica(Object ListaContatti, Profilo profilo) {
+    public Rubrica(TreeMap<String,Contatto>  listaContatti) {
+        this.listaContatti=listaContatti;
+    
     }
 
     
@@ -37,8 +39,8 @@ public class Rubrica {
      * @return ListaContatti è l'enttià ritornata dal programma all'esecuzione del metodo
      */
     
-    public Object getListaContatti() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public TreeMap<String,Contatto>  getListaContatti() {
+        return this.listaContatti;
     }
 
     
@@ -70,7 +72,12 @@ public class Rubrica {
     public void VisualizzaSingoloContatto(Contatto contatto_da_visualizzare) {
     }
 
-    public void VisualizzaContatti(Object ListaContatti) {
+    public void VisualizzaContatti(TreeMap<String,Contatto>  ListaContatti) {
     }
-}
 
+    @Override
+    public String toString() {
+        return "Rubrica{" + "listaContatti=" + listaContatti + '}';
+    }
+    
+}

@@ -179,6 +179,27 @@ public class ProfileSelectionController implements Initializable{
     }
     
     @FXML
+    public void eliminaProfilo() throws IOException{
+        String sceltaUtente = ListaProf.getSelectionModel().getSelectedItem();
+        Path pathProfiloSelezionato = Paths.get(System.getProperty("user.dir") + "/src/main/resources/profiliSalvati/" + sceltaUtente + ".txt");
+
+        //messaggio errore in caso di mancata selezione
+        if (sceltaUtente == null || sceltaUtente.isEmpty()) {
+            System.out.println("Nessun profilo selezionato");
+            ErrorAlertPage("Errore","Errore nella selezione","Devi selezionare un profilo per eliminarne uno");
+            return;
+        }else{
+            Files.delete(pathProfiloSelezionato);
+            InformationAlertPage("Conferma","Eliminazione confermata","Eliminazione avvenuta con successo");
+            
+            ListaProf.getItems().clear();
+            showProfile();
+        }
+        
+        
+    }
+    
+    @FXML
     public void showProfile(){
     String userDir = System.getProperty("user.dir");
             String path=userDir+"/src/main/resources/ProfiliSalvati/";
@@ -264,5 +285,14 @@ public class ProfileSelectionController implements Initializable{
         alert.setContentText(Content);
         alert.showAndWait();
     }
+    
+    public static void InformationAlertPage(String Title, String Header, String Content){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(Title);
+        alert.setHeaderText(Header);
+        alert.setContentText(Content);
+        alert.showAndWait();
+    }
+
 }                                                             
 
