@@ -25,10 +25,15 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -37,13 +42,19 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Control;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 /**
  * FXML Controller class
@@ -65,8 +76,6 @@ public class DashboardController implements Initializable {
     private TextField searchBar;
     @FXML
     private Button searchButton;
-    @FXML
-    private ListView<?> contactList;
     
     //ATTRIBUTI
     private final String folderDataSharing = System.getProperty("user.dir") + "/src/main/resources/DataSharing/";
@@ -76,6 +85,18 @@ public class DashboardController implements Initializable {
     private TreeMap<String,Contatto> listaContatti=new TreeMap<>();
     private Rubrica rubrica;
     private Contatto contatto = new Contatto(null,null,null,null,null);
+    @FXML
+    private TableView<Contatto> Table;
+    @FXML
+    private TableColumn<Contatto, String> NameCln;
+    @FXML
+    private TableColumn<Contatto, String> SurnameCln;
+    @FXML
+    private TableColumn<Contatto, String> numberCln;
+    @FXML
+    private TableColumn<Contatto, String> emailCln;
+    @FXML
+    private TableColumn<Contatto, String> EtichettaCln;
     
     //METODI DI CONTROLLO
     @Override
@@ -102,6 +123,7 @@ public class DashboardController implements Initializable {
         usernameProfilo = this.estraiUsernameProfiloDaFile(pathProfiloCaricato);
         //estrazione rubrica
         rubrica=estraiRubricaDaFile(pathProfiloCaricato);
+        showRubrica(rubrica);
         
         //stampe
         System.out.println("USERNAME PROFILO: " + usernameProfilo);
@@ -180,6 +202,7 @@ public class DashboardController implements Initializable {
             }
         }
     }
+    showRubrica(rubrica);
     }
 
     @FXML
@@ -265,16 +288,16 @@ public class DashboardController implements Initializable {
  
                     // Crea un oggetto Contatto
                     
-                   
+                    contatto = new Contatto(null,null,null,null,null);
                    contatto.setNome(nome);
                    contatto.setCognome(cognome);
                    contatto.setNumeriTelefono(Arrays.asList(telefono));
                    contatto.setEmails(Arrays.asList(email));
                    contatto.setEtichetta(etichetta);
-                  
-                      
+                  listaContatti.put(contatto.getNome()+" "+contatto.getCognome(), contatto);
+                      //System.out.print("il contatto è: "+listaContatti);
                     // Crea un oggetto Contatto
-                   listaContatti.put(contatto.getNome()+" "+contatto.getCognome(), contatto);
+                   
               // Contatto trovato, esci dal ciclo
             }
         }
@@ -287,5 +310,18 @@ public class DashboardController implements Initializable {
    rubrica=new Rubrica(listaContatti);
    return rubrica;
 }
-    
+   
+
+
+    public void showRubrica(Rubrica ru){
+        NameCln.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNome()));
+    SurnameCln.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCognome()));
+    numberCln.setCellValueFactory(cellData -> new SimpleStringProperty(
+            String.join(" "+" ", cellData.getValue().getNumeriTelefono()))); // Unisci numeri di telefono
+    emailCln.setCellValueFactory(cellData -> new SimpleStringProperty(
+            String.join("     ", cellData.getValue().getEmails()))); // Unisci email
+   EtichettaCln.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEtichetta()));
+   ObservableList<Contatto> contattiList = FXCollections.observableArrayList(ru.getListaContatti().values());
+    Table.setItems(contattiList);
+    }
 }

@@ -106,8 +106,14 @@ public class Contatto {
     }
 
     @Override
-    public String toString() {
-        return "Contatto{" + "Nome=" + this.getNome() + ", Cognome=" + this.getCognome() + ", NumeriTelefono=" + this.getNumeriTelefono() + ", Emails=" + this.getEmails() + ", Etichetta=" + this.getEtichetta() + "}\n";
-    }
+   public String toString() {
+    return "Contatto{" + 
+           "Nome=" + this.getNome() + 
+           ", Cognome=" + this.getCognome() + 
+           ", NumeriTelefono=" + String.join(" ", this.getNumeriTelefono()) + 
+           ", Emails=" + String.join(" ", this.getEmails()) + 
+           ", Etichetta=" + this.getEtichetta() + 
+           "}";
+}
     
 }
