@@ -24,11 +24,21 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -39,11 +49,16 @@ import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import sun.applet.Main;
 
 /**
  * FXML Controller class
@@ -66,7 +81,17 @@ public class DashboardController implements Initializable {
     @FXML
     private Button searchButton;
     @FXML
-    private ListView<?> contactList;
+    private TableView<Contatto> Table;
+    @FXML
+    private TableColumn<Contatto, String> NameCln;
+    @FXML
+    private TableColumn<Contatto, String> SurnameCln;
+    @FXML
+    private TableColumn<Contatto, String> numberCln;
+    @FXML
+    private TableColumn<Contatto, String> emailClm;
+    @FXML
+    private TableColumn<Contatto, String> EtichettaCln;
     
     //ATTRIBUTI
     private final String folderDataSharing = System.getProperty("user.dir") + "/src/main/resources/DataSharing/";
@@ -76,6 +101,7 @@ public class DashboardController implements Initializable {
     private TreeMap<String,Contatto> listaContatti=new TreeMap<>();
     private Rubrica rubrica;
     private Contatto contatto = new Contatto(null,null,null,null,null);
+
     
     //METODI DI CONTROLLO
     @Override
@@ -108,6 +134,7 @@ public class DashboardController implements Initializable {
         System.out.println("la rubrica è: "+rubrica);
         
         //VISUALIZZAZIONE DELLA RUBRICA RELATIVA AL PROFILO
+        showRubrica(rubrica);
         
         //SVUOTAMENTO FILE "profileSelectionFile"
         svuotaFile(profileSelectionFilePath);
@@ -124,70 +151,164 @@ public class DashboardController implements Initializable {
     Stage parentStage = (Stage) paneSinistro.getScene().getWindow();
 
     // Crea un nuovo Alert
-    Alert usernameAlert = new Alert(Alert.AlertType.NONE); // Nessun tipo predefinito
-    usernameAlert.initModality(Modality.APPLICATION_MODAL);
-    usernameAlert.initOwner(parentStage);
-    usernameAlert.setTitle("Aggiunta contatto");
-    usernameAlert.setHeaderText("Inserisci i dati del nuovo contatto");
+    Alert contattoAlert = new Alert(Alert.AlertType.NONE); // Nessun tipo predefinito
+    contattoAlert.initModality(Modality.APPLICATION_MODAL);
+    contattoAlert.initOwner(parentStage);
+    contattoAlert.setTitle("Aggiunta contatto");
+    contattoAlert.setHeaderText("Inserisci i dati del nuovo contatto");
 
     // Crea il contenuto personalizzato per il popup
-    VBox content = new VBox(10);
-    content.setAlignment(Pos.CENTER);
-    content.setSpacing(10);
+        GridPane content = new GridPane();
+        content.setAlignment(Pos.CENTER);
+        content.setHgap(10);
+        content.setVgap(10);
+        content.setPrefWidth(500); 
 
-    Label promptLabel = new Label("Nome del profilo:");
-    TextField usernameField = new TextField();
-    usernameField.setPromptText("Inserisci lo username");
+        // Etichette e campi di input
+        Label nomeLabel = new Label("Nome:");
+        TextField nomeField = new TextField();
+        nomeField.setPromptText("Inserisci il nome");
+        nomeField.setPrefWidth(300);
 
-    Label feedbackLabel = new Label();
-    feedbackLabel.setStyle("-fx-text-fill: red;"); // Testo rosso per errori
+        Label cognomeLabel = new Label("Cognome:");
+        TextField cognomeField = new TextField();
+        cognomeField.setPromptText("Inserisci il cognome");
+        cognomeField.setPrefWidth(300);
 
-    content.getChildren().addAll(promptLabel, usernameField, feedbackLabel);
+        Label telefono1Label = new Label("Telefono 1:");
+        TextField telefono1Field = new TextField();
+        telefono1Field.setPromptText("Inserisci il primo telefono");
+        telefono1Field.setPrefWidth(300);
 
-    // Aggiungi il contenuto al DialogPane
-    usernameAlert.getDialogPane().setContent(content);
+        Label telefono2Label = new Label("Telefono 2:");
+        TextField telefono2Field = new TextField();
+        telefono2Field.setPromptText("Inserisci il secondo telefono (opzionale)");
+        telefono2Field.setPrefWidth(300);
 
-    // Aggiungi i pulsanti OK e Annulla
-    ButtonType okButton = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
-    ButtonType cancelButton = new ButtonType("Annulla", ButtonBar.ButtonData.CANCEL_CLOSE);
-    usernameAlert.getButtonTypes().addAll(okButton, cancelButton);
+        Label telefono3Label = new Label("Telefono 3:");
+        TextField telefono3Field = new TextField();
+        telefono3Field.setPromptText("Inserisci il terzo telefono (opzionale)");
+        telefono3Field.setPrefWidth(300);
 
-    // Gestisci il risultato
-    Optional<ButtonType> result = usernameAlert.showAndWait();
-    String username = null;
-    
-    if (result.isPresent() && result.get() == okButton) {
-        username = usernameField.getText().trim();
-        if (username.isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Errore di validazione");
-            alert.setHeaderText("Campo obbligatorio");
-            alert.setContentText("Il campo di testo non può essere vuoto!");
-            alert.showAndWait();
-        } else {
-            String userDir = System.getProperty("user.dir");
-            File folder = new File(userDir, "/src/main/resources/ProfiliSalvati/");
-            if (!folder.exists()) {
-                folder.mkdirs();
-            }
-                 
-            File file = new File(folder, username + ".txt");
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-                writer.write("Username = " + username);
-            } catch (IOException e) {
-                e.printStackTrace();
-                System.out.println("Errore nella creazione del file.");
+        Label email1Label = new Label("E-mail 1:");
+        TextField email1Field = new TextField();
+        email1Field.setPromptText("Inserisci la prima e-mail (opzionale)");
+        email1Field.setPrefWidth(300);
+
+        Label email2Label = new Label("E-mail 2:");
+        TextField email2Field = new TextField();
+        email2Field.setPromptText("Inserisci la seconda e-mail (opzionale)");
+        email2Field.setPrefWidth(300);
+
+        Label email3Label = new Label("E-mail 3:");
+        TextField email3Field = new TextField();
+        email3Field.setPromptText("Inserisci la terza e-mail (opzionale)");
+        email3Field.setPrefWidth(300);
+
+        Label etichettaLabel = new Label("Etichetta:");
+        TextField etichettaField = new TextField();
+        etichettaField.setPromptText("Inserisci un'etichetta (opzionale)");
+        etichettaField.setPrefWidth(300);
+
+        // Disposizione in griglia
+        content.add(nomeLabel, 0, 0);
+        content.add(nomeField, 1, 0);
+        content.add(cognomeLabel, 0, 1);
+        content.add(cognomeField, 1, 1);
+        content.add(telefono1Label, 0, 2);
+        content.add(telefono1Field, 1, 2);
+        content.add(telefono2Label, 0, 3);
+        content.add(telefono2Field, 1, 3);
+        content.add(telefono3Label, 0, 4);
+        content.add(telefono3Field, 1, 4);
+        content.add(email1Label, 0, 5);
+        content.add(email1Field, 1, 5);
+        content.add(email2Label, 0, 6);
+        content.add(email2Field, 1, 6);
+        content.add(email3Label, 0, 7);
+        content.add(email3Field, 1, 7);
+        content.add(etichettaLabel, 0, 8);
+        content.add(etichettaField, 1, 8);
+
+        // Aggiungi il contenuto al DialogPane
+        contattoAlert.getDialogPane().setContent(content);
+
+        // Aggiungi i pulsanti OK e Annulla
+        ButtonType okButton = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+        ButtonType cancelButton = new ButtonType("Annulla", ButtonBar.ButtonData.CANCEL_CLOSE);
+        contattoAlert.getButtonTypes().addAll(okButton, cancelButton);
+
+        // Gestisci il risultato
+        Optional<ButtonType> result = contattoAlert.showAndWait();
+
+        if (result.isPresent() && result.get() == okButton) {
+            // Recupera i dati inseriti
+            String nome = nomeField.getText().trim();
+            String cognome = cognomeField.getText().trim();
+            String telefono1 = telefono1Field.getText().trim();
+            String telefono2 = telefono2Field.getText().trim();
+            String telefono3 = telefono3Field.getText().trim();
+            String email1 = email1Field.getText().trim();
+            String email2 = email2Field.getText().trim();
+            String email3 = email3Field.getText().trim();
+            String etichetta = etichettaField.getText().trim();
+
+            // Validazione dati
+            if (nome.isEmpty() || cognome.isEmpty() || telefono1.isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Errore di validazione");
+                alert.setHeaderText("Campi obbligatori mancanti");
+                alert.setContentText("Nome,Cognome e Telefono 1 sono obbligatori");
+                alert.showAndWait();
+            } else {
+                //salvataggio dei dati o altre azioni necessarie
+                //-creazione oggetto Contatto
+                contatto = new Contatto (nome, cognome, Arrays.asList(telefono1, telefono2, telefono3), Arrays.asList(email1, email2, email3), etichetta);
+                //-aggiunta contatto alla collection di contatti
+                listaContatti.put(nome + " " + cognome, contatto);
+                //aggiunta contatto su file di salvataggio del profilo
+                addContactToFile(this.pathProfiloCaricato, contatto);
+                //-messaggio su console
+                System.out.println("Contatto aggiunto alla collection e al file: " + nome + " " + cognome);
             }
         }
     }
-    }
 
     @FXML
-    private void esportaContatto(ActionEvent event) {
+    private void esportaRubrica(ActionEvent event) throws IOException{
+        System.out.println("Questo è il path" + pathProfiloCaricato);
+        Stage stage = (Stage) exportButton.getScene().getWindow();
+        FileChooser salva_file = new FileChooser();
+        FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("File testuali (.txt)", ".txt");
+        salva_file.setInitialDirectory(new File(System.getProperty("user.home")));
+        salva_file.getExtensionFilters().add(filter);
+        salva_file.setTitle("Esportazione rubrica");
+        File file = new File(pathProfiloCaricato);
+        salva_file.setInitialFileName(file.getName());
+        File file_scelto = salva_file.showSaveDialog(null);
+        if(file_scelto == null){
+           ProfileSelectionController.WarningAlertPage("Annullamento", "Operazione annullata", "Hai annullato l'operazione");
+           return;
+        }else{
+        Files.copy(file.toPath(), file_scelto.toPath(),StandardCopyOption.REPLACE_EXISTING);
+        ProfileSelectionController.InformationAlertPage("Successo", "Rubrica esportata", "La rubrica è stata esportata correttamente");
+        }
     }
 
     @FXML
     private void ricercaContatto(ActionEvent event) {
+    }
+    
+    public void showRubrica(Rubrica ru){
+        NameCln.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNome()));
+    SurnameCln.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCognome()));
+    numberCln.setCellValueFactory(cellData -> new SimpleStringProperty(
+            String.join("  ", cellData.getValue().getNumeriTelefono()))); // Unisci numeri di telefono
+    emailClm.setCellValueFactory(cellData -> new SimpleStringProperty(
+            String.join("     ", cellData.getValue().getEmails()))); // Unisci email
+   EtichettaCln.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEtichetta()));
+   ObservableList<Contatto> contattiList = FXCollections.observableArrayList(ru.getListaContatti().values());
+    Table.setItems(contattiList);
     }
     
     
@@ -264,8 +385,7 @@ public class DashboardController implements Initializable {
                     String etichetta = dati[4].trim();
  
                     // Crea un oggetto Contatto
-                    
-                   
+                   contatto = new Contatto(null,null,null,null,null);
                    contatto.setNome(nome);
                    contatto.setCognome(cognome);
                    contatto.setNumeriTelefono(Arrays.asList(telefono));
@@ -288,4 +408,45 @@ public class DashboardController implements Initializable {
    return rubrica;
 }
     
+    public void addContactToFile(String pathProfiloCaricato, Contatto contattoDaSalvare) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(pathProfiloCaricato, true))) {
+            // get di nome e cognome
+            String nome = contattoDaSalvare.getNome();
+            String cognome = contattoDaSalvare.getCognome();
+
+            // Gestione numeri di telefono
+            List<String> numeriTelefono = contattoDaSalvare.getNumeriTelefono();
+            String telefono1 = numeriTelefono.get(0);
+            String telefono2 = numeriTelefono.get(1);
+            String telefono3 = numeriTelefono.get(2);
+
+            // Gestione email
+            List<String> emails = contattoDaSalvare.getEmails();
+            String email1 = emails.get(0);
+            String email2 = emails.get(1);
+            String email3 = emails.get(2);
+
+            String etichetta = contattoDaSalvare.getEtichetta();
+
+            // Creazione della riga formattata
+            String contattoFormattato = String.format("%s,%s,%s %s %s,%s %s %s,%s",
+                    nome,
+                    cognome,
+                    telefono1,
+                    telefono2,
+                    telefono3,
+                    email1,
+                    email2,
+                    email3,
+                    etichetta
+            );
+
+            // Scrittura della riga sul file
+            writer.newLine(); // Assicura che i nuovi dati siano scritti in una nuova riga
+            writer.write(contattoFormattato);
+
+        } catch (IOException e) {
+            System.err.println("Errore durante la scrittura del file: " + e.getMessage());
+        }
+    }
 }

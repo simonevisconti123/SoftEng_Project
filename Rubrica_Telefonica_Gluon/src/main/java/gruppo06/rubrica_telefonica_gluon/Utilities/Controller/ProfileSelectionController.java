@@ -63,7 +63,7 @@ public class ProfileSelectionController implements Initializable{
     private Button selezionaProfiloButton;
 
     //ATTRIBUTI
-    private final String folderDataSharing = System.getProperty("user.dir") + "/src/main/resources/DataSharing/";
+    private final String folderDataSharing = System.getProperty("user.dir") + "\\src\\main\\resources\\DataSharing\\";
     private String pathProfiloSelezionato;
     
     //METODI DI CONTROLLO
@@ -288,6 +288,14 @@ public class ProfileSelectionController implements Initializable{
     
     public static void InformationAlertPage(String Title, String Header, String Content){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(Title);
+        alert.setHeaderText(Header);
+        alert.setContentText(Content);
+        alert.showAndWait();
+    }
+    
+    public static void WarningAlertPage(String Title, String Header, String Content){
+        Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle(Title);
         alert.setHeaderText(Header);
         alert.setContentText(Content);
