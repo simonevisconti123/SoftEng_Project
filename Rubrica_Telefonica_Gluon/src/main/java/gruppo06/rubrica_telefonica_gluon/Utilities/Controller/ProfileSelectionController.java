@@ -219,8 +219,11 @@ public class ProfileSelectionController implements Initializable{
         String sceltaUtente = ListaProf.getSelectionModel().getSelectedItem();
         pathProfiloSelezionato = System.getProperty("user.dir") + "/src/main/resources/profiliSalvati/" + sceltaUtente + ".txt";
 
+        //messaggio errore in caso di mancata selezione
         if (sceltaUtente == null || sceltaUtente.isEmpty()) {
             System.out.println("Nessun profilo selezionato");
+            ErrorAlertPage("Errore","Errore nella selezione","Devi selezionare un profilo per procedere");
+
             return;
         }
         
@@ -252,6 +255,14 @@ public class ProfileSelectionController implements Initializable{
         } catch (IOException e) {
             System.err.println("Errore durante il salvataggio del dato: " + e.getMessage());
         }
+    }
+    
+    public static void ErrorAlertPage(String Title, String Header, String Content){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(Title);
+        alert.setHeaderText(Header);
+        alert.setContentText(Content);
+        alert.showAndWait();
     }
 }                                                             
 
