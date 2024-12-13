@@ -63,7 +63,7 @@ public class ProfileSelectionController implements Initializable{
     private Button selezionaProfiloButton;
 
     //ATTRIBUTI
-    private final String folderDataSharing = System.getProperty("user.dir") + "\\src\\main\\resources\\DataSharing\\";
+    private final String folderDataSharing = System.getProperty("user.dir") + "/src/main/resources/DataSharing/";
     private String pathProfiloSelezionato;
     
     //METODI DI CONTROLLO

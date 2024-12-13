@@ -5,3 +5,5 @@ Luigi,Bianchi,555123456,luigi.bianchi@example.com,Collega
 Anna,Verdi,111222333,anna.verdi@example.com,Famiglia
 Paolo,Neri,333444555,paolo.neri@example.com,Conoscente
 Paolooo,Nerio,333444555,paolo.neri@example.com,Conoscente
+pas,vit,834975438953
+pas,vit,83948237|873847238

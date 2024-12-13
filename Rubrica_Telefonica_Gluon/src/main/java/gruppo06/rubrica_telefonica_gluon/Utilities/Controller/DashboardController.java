@@ -36,13 +36,16 @@ import java.util.ResourceBundle;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
@@ -101,6 +104,7 @@ public class DashboardController implements Initializable {
     private TreeMap<String,Contatto> listaContatti=new TreeMap<>();
     private Rubrica rubrica;
     private Contatto contatto = new Contatto(null,null,null,null,null);
+private ObservableList<Contatto> contattiObservable = FXCollections.observableArrayList();
 
     
     //METODI DI CONTROLLO
@@ -135,7 +139,16 @@ public class DashboardController implements Initializable {
         
         //VISUALIZZAZIONE DELLA RUBRICA RELATIVA AL PROFILO
         showRubrica(rubrica);
-        
+        contattiObservable.addAll(listaContatti.values());
+    Table.setItems(contattiObservable);
+    Table.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+        if (newValue != null) {
+            mostraDettagliContatto(newValue);
+        }
+    });
+
+    // Configura la barra di ricerca
+ 
         //SVUOTAMENTO FILE "profileSelectionFile"
         svuotaFile(profileSelectionFilePath);
     }
@@ -298,7 +311,24 @@ public class DashboardController implements Initializable {
 
     @FXML
     private void ricercaContatto(ActionEvent event) {
+       if (searchBar == null) {
+        contattiObservable.setAll(listaContatti.values());
+    } else {
+        String filtroLower = searchBar.getText();
+
+        Contatto contattoEsatto=rubrica.RicercaContatto(searchBar.getText());
+        if (contattoEsatto != null) {
+            contattiObservable.setAll(contattoEsatto);
+        } else {
+            List<Contatto> contattiFiltrati = listaContatti.values().stream()
+                .filter(contatto -> contatto.getNome().toLowerCase().contains(filtroLower) ||
+                                    contatto.getCognome().toLowerCase().contains(filtroLower))
+                .collect(Collectors.toList());
+            contattiObservable.setAll(contattiFiltrati);
+        }
     }
+}
+    
     
     public void showRubrica(Rubrica ru){
         NameCln.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNome()));
@@ -306,7 +336,7 @@ public class DashboardController implements Initializable {
     numberCln.setCellValueFactory(cellData -> new SimpleStringProperty(
             String.join("  ", cellData.getValue().getNumeriTelefono()))); // Unisci numeri di telefono
     emailClm.setCellValueFactory(cellData -> new SimpleStringProperty(
-            String.join("     ", cellData.getValue().getEmails()))); // Unisci email
+            String.join("   ", cellData.getValue().getEmails()))); // Unisci email
    EtichettaCln.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEtichetta()));
    ObservableList<Contatto> contattiList = FXCollections.observableArrayList(ru.getListaContatti().values());
     Table.setItems(contattiList);
@@ -488,5 +518,100 @@ public class DashboardController implements Initializable {
         
         this.showRubrica(rubrica);
     }
+private void mostraDettagliContatto(Contatto contatto) {
+     if (contatto == null) return;
 
+    // Crea un nuovo Stage per visualizzare i dettagli del contatto
+    Stage stage = new Stage();
+    stage.setTitle("Dettagli Contatto");
+
+    VBox layout = new VBox(10);
+    layout.setPadding(new Insets(10));
+
+    // Crea le etichette con i dati del contatto
+    Label nomeLabel = new Label("Nome: " + contatto.getNome());
+    Label cognomeLabel = new Label("Cognome: " + contatto.getCognome());
+    Label telefonoLabel = new Label("Telefono: " + String.join(" ", contatto.getNumeriTelefono()));
+    Label emailLabel = new Label("Email: " + String.join(" ", contatto.getEmails()));
+    Label etichettaLabel = new Label("Etichetta: " + contatto.getEtichetta());
+
+    // Crea il pulsante per la modifica
+    Button modificaButton = new Button("Modifica Contatto");
+    modificaButton.setOnAction(e -> {
+        modificaContatto(contatto, stage);// Chiamata al metodo di modifica
+        stage.close();;
+    });
+
+    layout.getChildren().addAll(nomeLabel, cognomeLabel, telefonoLabel, emailLabel, etichettaLabel, modificaButton);
+
+    Scene scene = new Scene(layout, 400, 300);
+    stage.setScene(scene);
+    stage.show();
+
+}
+private void modificaContatto(Contatto contatto, Stage stagePrecedente) {
+    Stage stage = new Stage();
+    stage.setTitle("Dettagli Contatto");
+    GridPane grid = new GridPane();
+    grid.setHgap(10);
+    grid.setVgap(10);
+    grid.setPadding(new Insets(10));
+
+    // Crea una finestra di modifica con i campi già popolati
+    TextField nomeField = new TextField(contatto.getNome());
+    TextField cognomeField = new TextField(contatto.getCognome());
+    TextField telefonoField = new TextField(String.join(" ", contatto.getNumeriTelefono()));
+    TextField emailField = new TextField(String.join(" ", contatto.getEmails()));
+    TextField etichettaField = new TextField(contatto.getEtichetta());
+
+    // Crea una finestra per l'input dei nuovi dati
+    
+      grid.add(new Label("Nome:"), 0, 0);
+    grid.add(nomeField, 1, 0);
+    grid.add(new Label("Cognome:"), 0, 1);
+    grid.add(cognomeField, 1, 1);
+    grid.add(new Label("Telefono:"), 0, 2);
+    grid.add(telefonoField, 1, 2);
+    grid.add(new Label("Email:"), 0, 3);
+    grid.add(emailField, 1, 3);
+    grid.add(new Label("Etichetta:"), 0, 4);
+    grid.add(etichettaField, 1, 4);
+
+
+      Button salvaButton = new Button("Salva");
+    salvaButton.setOnAction(e -> salvaModifiche(contatto, nomeField, cognomeField, telefonoField, emailField, etichettaField, stage));
+
+    // Aggiungi il listener per il tasto Enter per ogni campo di testo
+    nomeField.setOnAction(e -> salvaModifiche(contatto, nomeField, cognomeField, telefonoField, emailField, etichettaField, stage));
+    cognomeField.setOnAction(e -> salvaModifiche(contatto, nomeField, cognomeField, telefonoField, emailField, etichettaField, stage));
+    telefonoField.setOnAction(e -> salvaModifiche(contatto, nomeField, cognomeField, telefonoField, emailField, etichettaField, stage));
+    emailField.setOnAction(e -> salvaModifiche(contatto, nomeField, cognomeField, telefonoField, emailField, etichettaField, stage));
+    etichettaField.setOnAction(e -> salvaModifiche(contatto, nomeField, cognomeField, telefonoField, emailField, etichettaField, stage));
+
+
+        // Aggiorna la Tabella se necessario
+       // Chiudi la finestra di modifica
+    
+VBox layout = new VBox(10);
+    layout.setPadding(new Insets(10));
+
+    layout.getChildren().addAll(grid, salvaButton);
+
+    Scene scene = new Scene(layout, 400, 300);
+    stage.setScene(scene);
+    stage.show();
+}
+private void salvaModifiche(Contatto contatto, TextField nomeField, TextField cognomeField, TextField telefonoField, TextField emailField, TextField etichettaField, Stage stage) {
+    // Salva le modifiche nel contatto
+    contatto.setNome(nomeField.getText());
+    contatto.setCognome(cognomeField.getText());
+    contatto.setNumeriTelefono(Arrays.asList(telefonoField.getText().split(" ")));
+    contatto.setEmails(Arrays.asList(emailField.getText().split(" ")));
+    contatto.setEtichetta(etichettaField.getText());
+
+    // Aggiorna la Tabella se necessario
+    Table.refresh();  // Questo aggiorna la tabella con i nuovi dati
+
+    stage.close();  // Chiudi la finestra di modifica
+}
 }
