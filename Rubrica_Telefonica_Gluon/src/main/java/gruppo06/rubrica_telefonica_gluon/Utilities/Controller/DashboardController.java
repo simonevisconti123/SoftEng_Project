@@ -264,6 +264,7 @@ public class DashboardController implements Initializable {
                 //salvataggio dei dati o altre azioni necessarie
                 //-creazione oggetto Contatto
                 contatto = new Contatto (nome, cognome, Arrays.asList(telefono1, telefono2, telefono3), Arrays.asList(email1, email2, email3), etichetta);
+                System.out.println(contatto.getNome());
                 //-aggiunta contatto alla collection di contatti
                 listaContatti.put(nome + " " + cognome, contatto);
                 //aggiunta contatto su file di salvataggio del profilo
@@ -410,43 +411,82 @@ public class DashboardController implements Initializable {
     
     public void addContactToFile(String pathProfiloCaricato, Contatto contattoDaSalvare) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(pathProfiloCaricato, true))) {
-            // get di nome e cognome
+            // Ottieni nome e cognome
             String nome = contattoDaSalvare.getNome();
             String cognome = contattoDaSalvare.getCognome();
 
             // Gestione numeri di telefono
             List<String> numeriTelefono = contattoDaSalvare.getNumeriTelefono();
-            String telefono1 = numeriTelefono.get(0);
-            String telefono2 = numeriTelefono.get(1);
-            String telefono3 = numeriTelefono.get(2);
+            String telefono1 = (numeriTelefono.size() > 0 && numeriTelefono.get(0) != null && !numeriTelefono.get(0).isEmpty()) ? numeriTelefono.get(0) : "";
+            String telefono2 = (numeriTelefono.size() > 1 && numeriTelefono.get(1) != null && !numeriTelefono.get(1).isEmpty()) ? numeriTelefono.get(1) : "";
+            String telefono3 = (numeriTelefono.size() > 2 && numeriTelefono.get(2) != null && !numeriTelefono.get(2).isEmpty()) ? numeriTelefono.get(2) : "";
 
             // Gestione email
             List<String> emails = contattoDaSalvare.getEmails();
-            String email1 = emails.get(0);
-            String email2 = emails.get(1);
-            String email3 = emails.get(2);
+            String email1 = (emails.size() > 0 && emails.get(0) != null && !emails.get(0).isEmpty()) ? emails.get(0) : "";
+            String email2 = (emails.size() > 1 && emails.get(1) != null && !emails.get(1).isEmpty()) ? emails.get(1) : "";
+            String email3 = (emails.size() > 2 && emails.get(2) != null && !emails.get(2).isEmpty()) ? emails.get(2) : "";
 
+            // Etichetta
             String etichetta = contattoDaSalvare.getEtichetta();
 
-            // Creazione della riga formattata
-            String contattoFormattato = String.format("%s,%s,%s %s %s,%s %s %s,%s",
-                    nome,
-                    cognome,
-                    telefono1,
-                    telefono2,
-                    telefono3,
-                    email1,
-                    email2,
-                    email3,
-                    etichetta
-            );
+            // Costruisci la riga formattata
+            StringBuilder contattoFormattato = new StringBuilder();
+
+            // Aggiungi nome e cognome
+            if (nome != null && !nome.isEmpty()) {
+                contattoFormattato.append(nome);
+            }
+            if (cognome != null && !cognome.isEmpty()) {
+                if (contattoFormattato.length() > 0) contattoFormattato.append(",");
+                contattoFormattato.append(cognome);
+            }
+
+            // Aggiungi numeri di telefono
+            String telefoni = telefono1;
+            if (!telefono2.isEmpty()) {
+                if (!telefoni.isEmpty()) telefoni += "|";
+                telefoni += telefono2;
+            }
+            if (!telefono3.isEmpty()) {
+                if (!telefoni.isEmpty()) telefoni += "|";
+                telefoni += telefono3;
+            }
+            if (!telefoni.isEmpty()) {
+                if (contattoFormattato.length() > 0) contattoFormattato.append(",");
+                contattoFormattato.append(telefoni);
+            }
+
+            // Aggiungi email
+            String emailsFormat = email1;
+            if (!email2.isEmpty()) {
+                if (!emailsFormat.isEmpty()) emailsFormat += "|";
+                emailsFormat += email2;
+            }
+            if (!email3.isEmpty()) {
+                if (!emailsFormat.isEmpty()) emailsFormat += "|";
+                emailsFormat += email3;
+            }
+            if (!emailsFormat.isEmpty()) {
+                if (contattoFormattato.length() > 0) contattoFormattato.append(",");
+                contattoFormattato.append(emailsFormat);
+            }
+
+            // Aggiungi etichetta
+            if (etichetta != null && !etichetta.isEmpty()) {
+                if (contattoFormattato.length() > 0) contattoFormattato.append(",");
+                contattoFormattato.append(etichetta);
+            }
 
             // Scrittura della riga sul file
-            writer.newLine(); // Assicura che i nuovi dati siano scritti in una nuova riga
-            writer.write(contattoFormattato);
+            writer.newLine(); // Aggiungi una nuova riga prima di scrivere
+            writer.write(contattoFormattato.toString());
 
         } catch (IOException e) {
             System.err.println("Errore durante la scrittura del file: " + e.getMessage());
         }
+        
+        this.showRubrica(rubrica);
     }
+
 }

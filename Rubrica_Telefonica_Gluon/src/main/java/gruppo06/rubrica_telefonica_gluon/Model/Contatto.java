@@ -37,11 +37,11 @@ public class Contatto {
  
 
     public Contatto(String nome, String cognome, List<String> numeriTelefono, List<String> Emails, String etichetta) {
-         this.Nome = Nome;
-        this.Cognome = Cognome;
+         this.Nome = nome;
+        this.Cognome = cognome;
             this.NumeriTelefono = numeriTelefono != null ? numeriTelefono : new ArrayList<>();
     this.Emails =Emails != null ? Emails : new ArrayList<>();
-        this.Etichetta = Etichetta;
+        this.Etichetta = etichetta;
     }
 
     
