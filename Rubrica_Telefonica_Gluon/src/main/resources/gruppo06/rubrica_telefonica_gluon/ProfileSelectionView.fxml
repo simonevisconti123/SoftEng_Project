@@ -30,7 +30,7 @@
                   <Button fx:id="eliminaProfilo" layoutX="232.0" layoutY="121.0" mnemonicParsing="false" onAction="#eliminaProfilo" prefHeight="25.0" prefWidth="122.0" text="Elimina profilo" />
                </children>
             </Pane>
-            <Pane fx:id="buttonProfilePane" prefHeight="600.0" prefWidth="600.0">
+            <Pane fx:id="buttonProfilePane" prefHeight="600.0" prefWidth="600.0" style="-fx-background-color: #9c9c9c;">
                <children>
                   <Button fx:id="creaProfilo" layoutX="104.0" layoutY="120.0" mnemonicParsing="false" onAction="#creazioneProfilo" prefHeight="50.0" prefWidth="130.0" text="Crea profilo" />
                   <Button fx:id="importaProfilo" layoutX="102.0" layoutY="187.0" mnemonicParsing="false" onAction="#importazioneProfilo" prefHeight="50.0" prefWidth="130.0" text="Importa profilo" />

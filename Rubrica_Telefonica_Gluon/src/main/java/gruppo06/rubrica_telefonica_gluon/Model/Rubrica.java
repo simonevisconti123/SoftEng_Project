@@ -63,7 +63,9 @@ public class Rubrica {
     public void EliminazioneContatto(Contatto contatto_da_eliminare) {
     }
 
-    public void RicercaContatto(String nome, String cognome) {
+    public Contatto RicercaContatto(String nome_cognome) {
+       return this.listaContatti.get(nome_cognome);
+        
     }
 
     public void ModificaContatto(String Nome, String Cognome, String[] NumeriTelefono, String[] Emails, String Etichetta) {
@@ -79,5 +81,4 @@ public class Rubrica {
     public String toString() {
         return "Rubrica{" + "listaContatti=" + listaContatti + '}';
     }
-    
-}
+}    

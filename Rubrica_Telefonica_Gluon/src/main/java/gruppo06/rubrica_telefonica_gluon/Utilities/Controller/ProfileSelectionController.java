@@ -1,4 +1,3 @@
-
 /**
  * @file ProfileSelectionController.java
  * @brief Controller della selezione del profilo
@@ -63,7 +62,7 @@ public class ProfileSelectionController implements Initializable{
     private Button selezionaProfiloButton;
 
     //ATTRIBUTI
-    private final String folderDataSharing = System.getProperty("user.dir") + "\\src\\main\\resources\\DataSharing\\";
+    private final String folderDataSharing = System.getProperty("user.dir") + "/src/main/resources/DataSharing/";
     private String pathProfiloSelezionato;
     
     //METODI DI CONTROLLO
@@ -167,7 +166,7 @@ public class ProfileSelectionController implements Initializable{
                  
             File file = new File(folder, username + ".txt");
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-                writer.write("Username = " + username);
+                writer.write("Username = " + username + "\n");
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("Errore nella creazione del file.");
@@ -253,7 +252,7 @@ public class ProfileSelectionController implements Initializable{
         System.out.println("path del profilo selezionato: " + pathProfiloSelezionato);
         
         //SALVATAGGIO SCELTA SU FILE
-        System.out.println("scrittura path del profilo selezionato sul file _profileFileSelection.txt_");
+        System.out.println("scrittura path del profilo selezionato sul file profileFileSelection.txt");
         DataShare("profileSelectionFile", pathProfiloSelezionato, "Path del profilo selezionato: ");
         
         //PASSAGGIO ALLA PROSSIMA VIEW
@@ -301,6 +300,4 @@ public class ProfileSelectionController implements Initializable{
         alert.setContentText(Content);
         alert.showAndWait();
     }
-
-}                                                             
-
+}

@@ -1,3 +1,0 @@
-Username = Luca Greco
-
-AA,BB,3535

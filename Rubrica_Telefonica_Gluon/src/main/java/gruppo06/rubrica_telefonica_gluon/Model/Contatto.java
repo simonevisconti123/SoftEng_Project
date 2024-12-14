@@ -14,7 +14,7 @@ import java.util.List;
  * @author AnthonyVita
  */
 
-public class Contatto {
+public class Contatto implements Cloneable{
 
     private String Nome;
 
@@ -108,6 +108,25 @@ public class Contatto {
     @Override
     public String toString() {
         return "Contatto{" + "Nome=" + this.getNome() + ", Cognome=" + this.getCognome() + ", NumeriTelefono=" + this.getNumeriTelefono() + ", Emails=" + this.getEmails() + ", Etichetta=" + this.getEtichetta() + "}\n";
+    }
+    
+    public String toStringFormatoFile(){
+        String contattoFormatoFile = this.Nome + "," + this.Cognome + "," + 
+                    String.join(" ", this.NumeriTelefono) + "," + 
+                    String.join(" ", this.Emails) + "," + 
+                    this.Etichetta;
+        
+        return contattoFormatoFile;
+    }
+    
+    @Override
+    public Contatto clone() {
+        try {
+            return (Contatto) super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
     
 }
