@@ -475,11 +475,11 @@ private ObservableList<Contatto> contattiObservable = FXCollections.observableAr
             // Aggiungi numeri di telefono
             String telefoni = telefono1;
             if (!telefono2.isEmpty()) {
-                if (!telefoni.isEmpty()) telefoni += "|";
+                if (!telefoni.isEmpty()) telefoni += " ";
                 telefoni += telefono2;
             }
             if (!telefono3.isEmpty()) {
-                if (!telefoni.isEmpty()) telefoni += "|";
+                if (!telefoni.isEmpty()) telefoni += " ";
                 telefoni += telefono3;
             }
             if (!telefoni.isEmpty()) {
@@ -490,12 +490,16 @@ private ObservableList<Contatto> contattiObservable = FXCollections.observableAr
             // Aggiungi email
             String emailsFormat = email1;
             if (!email2.isEmpty()) {
-                if (!emailsFormat.isEmpty()) emailsFormat += "|";
+                if (!emailsFormat.isEmpty()) emailsFormat += " ";
                 emailsFormat += email2;
+            }else{
+                emailsFormat +=" "+null ;
             }
             if (!email3.isEmpty()) {
-                if (!emailsFormat.isEmpty()) emailsFormat += "|";
+                  if (!emailsFormat.isEmpty()) emailsFormat += " ";
                 emailsFormat += email3;
+            }else{
+                emailsFormat += " "+null ;
             }
             if (!emailsFormat.isEmpty()) {
                 if (contattoFormattato.length() > 0) contattoFormattato.append(",");
@@ -519,7 +523,7 @@ private ObservableList<Contatto> contattiObservable = FXCollections.observableAr
         this.showRubrica(rubrica);
     }
 private void mostraDettagliContatto(Contatto contatto) {
-     if (contatto == null) return;
+     /*if (contatto == null) return;
 
     // Crea un nuovo Stage per visualizzare i dettagli del contatto
     Stage stage = new Stage();
@@ -544,13 +548,57 @@ private void mostraDettagliContatto(Contatto contatto) {
 
     layout.getChildren().addAll(nomeLabel, cognomeLabel, telefonoLabel, emailLabel, etichettaLabel, modificaButton);
 
-    Scene scene = new Scene(layout, 400, 300);
+    Scene scene = new Scene(layout, 800, 600);
+    stage.setScene(scene);
+    stage.show();*/
+     
+    if (contatto == null) return;
+
+    // Crea un nuovo Stage per visualizzare i dettagli del contatto
+    Stage stage = new Stage();
+    stage.setTitle("Dettagli Contatto");
+
+    VBox layout = new VBox(10);
+    layout.setPadding(new Insets(10));
+
+    // Etichetta del Nome
+    Label nomeLabel = new Label("Nome: " + contatto.getNome());
+    Label cognomeLabel = new Label("Cognome: " + contatto.getCognome());
+
+    // Mostra i numeri di telefono uno sotto l'altro
+    VBox telefonoBox = new VBox(5);
+    telefonoBox.getChildren().add(new Label("Numeri di Telefono:"));
+    for (String numero : contatto.getNumeriTelefono()) {
+        telefonoBox.getChildren().add(new Label("- " + numero));
+    }
+
+    // Mostra le email una sotto l'altra
+    VBox emailBox = new VBox(5);
+    emailBox.getChildren().add(new Label("Email:"));
+    for (String email : contatto.getEmails()) {
+        emailBox.getChildren().add(new Label("- " + email));
+    }
+
+    // Etichetta
+    Label etichettaLabel = new Label("Etichetta: " + contatto.getEtichetta());
+
+    // Pulsante per la modifica
+    Button modificaButton = new Button("Modifica Contatto");
+    modificaButton.setOnAction(e -> {
+        modificaContatto(contatto, stage); 
+stage.close();// Chiamata al metodo di modifica
+    });
+
+    layout.getChildren().addAll(nomeLabel, cognomeLabel, telefonoBox, emailBox, etichettaLabel, modificaButton);
+
+    Scene scene = new Scene(layout, 400, 400);
     stage.setScene(scene);
     stage.show();
 
+
 }
 private void modificaContatto(Contatto contatto, Stage stagePrecedente) {
-    Stage stage = new Stage();
+   /* Stage stage = new Stage();
     stage.setTitle("Dettagli Contatto");
     GridPane grid = new GridPane();
     grid.setHgap(10);
@@ -561,6 +609,8 @@ private void modificaContatto(Contatto contatto, Stage stagePrecedente) {
     TextField nomeField = new TextField(contatto.getNome());
     TextField cognomeField = new TextField(contatto.getCognome());
     TextField telefonoField = new TextField(String.join(" ", contatto.getNumeriTelefono()));
+    TextField telefonoField2 = new TextField(String.join(" ", contatto.getNumeriTelefono()));
+    TextField telefonoField3 = new TextField(String.join(" ", contatto.getNumeriTelefono()));
     TextField emailField = new TextField(String.join(" ", contatto.getEmails()));
     TextField etichettaField = new TextField(contatto.getEtichetta());
 
@@ -572,10 +622,14 @@ private void modificaContatto(Contatto contatto, Stage stagePrecedente) {
     grid.add(cognomeField, 1, 1);
     grid.add(new Label("Telefono:"), 0, 2);
     grid.add(telefonoField, 1, 2);
-    grid.add(new Label("Email:"), 0, 3);
-    grid.add(emailField, 1, 3);
-    grid.add(new Label("Etichetta:"), 0, 4);
-    grid.add(etichettaField, 1, 4);
+     grid.add(new Label("Telefono2:"), 0, 3);
+    grid.add(telefonoField2, 1, 3);
+     grid.add(new Label("Telefono3:"), 0, 4);
+    grid.add(telefonoField3, 1, 4);
+    grid.add(new Label("Email:"), 0, 5);
+    grid.add(emailField, 1, 5);
+    grid.add(new Label("Etichetta:"), 0, 6);
+    grid.add(etichettaField, 1, 6);
 
 
       Button salvaButton = new Button("Salva");
@@ -585,6 +639,8 @@ private void modificaContatto(Contatto contatto, Stage stagePrecedente) {
     nomeField.setOnAction(e -> salvaModifiche(contatto, nomeField, cognomeField, telefonoField, emailField, etichettaField, stage));
     cognomeField.setOnAction(e -> salvaModifiche(contatto, nomeField, cognomeField, telefonoField, emailField, etichettaField, stage));
     telefonoField.setOnAction(e -> salvaModifiche(contatto, nomeField, cognomeField, telefonoField, emailField, etichettaField, stage));
+        telefonoField2.setOnAction(e -> salvaModifiche(contatto, nomeField, cognomeField, telefonoField, emailField, etichettaField, stage));
+            telefonoField3.setOnAction(e -> salvaModifiche(contatto, nomeField, cognomeField, telefonoField, emailField, etichettaField, stage));
     emailField.setOnAction(e -> salvaModifiche(contatto, nomeField, cognomeField, telefonoField, emailField, etichettaField, stage));
     etichettaField.setOnAction(e -> salvaModifiche(contatto, nomeField, cognomeField, telefonoField, emailField, etichettaField, stage));
 
@@ -597,7 +653,7 @@ VBox layout = new VBox(10);
 
     layout.getChildren().addAll(grid, salvaButton);
 
-    Scene scene = new Scene(layout, 400, 300);
+    Scene scene = new Scene(layout, 800,600);
     stage.setScene(scene);
     stage.show();
 }
@@ -612,6 +668,71 @@ private void salvaModifiche(Contatto contatto, TextField nomeField, TextField co
     // Aggiorna la Tabella se necessario
     Table.refresh();  // Questo aggiorna la tabella con i nuovi dati
 
-    stage.close();  // Chiudi la finestra di modifica
+    stage.close();  // Chiudi la finestra di modifica*/
+      // Nuovo Stage per la modifica
+    Stage stage = new Stage();
+    stage.setTitle("Modifica Contatto");
+
+    VBox layout = new VBox(10);
+    layout.setPadding(new Insets(10));
+
+    // Campi di input per modificare i dettagli
+    TextField nomeField = new TextField(contatto.getNome());
+    TextField cognomeField = new TextField(contatto.getCognome());
+
+    VBox telefonoBox = new VBox(5);
+    telefonoBox.getChildren().add(new Label("Numeri di Telefono:"));
+    for (String numero : contatto.getNumeriTelefono()) {
+        telefonoBox.getChildren().add(new TextField(numero));
+    }
+
+    VBox emailBox = new VBox(5);
+    emailBox.getChildren().add(new Label("Email:"));
+    for (String email : contatto.getEmails()) {
+        emailBox.getChildren().add(new TextField(email));
+    }
+
+    TextField etichettaField = new TextField(contatto.getEtichetta());
+
+    // Pulsante per salvare le modifiche
+    Button salvaButton = new Button("Salva Modifiche");
+    salvaButton.setOnAction(e -> {
+        contatto.setNome(nomeField.getText());
+        contatto.setCognome(cognomeField.getText());
+
+        // Aggiorna numeri di telefono
+        List<String> nuoviNumeri = telefonoBox.getChildren().stream()
+                .filter(node -> node instanceof TextField)
+                .map(node -> ((TextField) node).getText())
+                .collect(Collectors.toList());
+        contatto.setNumeriTelefono(nuoviNumeri);
+
+        // Aggiorna email
+        List<String> nuoveEmail = emailBox.getChildren().stream()
+                .filter(node -> node instanceof TextField)
+                .map(node -> ((TextField) node).getText())
+                .collect(Collectors.toList());
+        contatto.setEmails(nuoveEmail);
+
+        contatto.setEtichetta(etichettaField.getText());
+
+        stage.close();
+       
+    });
+
+    layout.getChildren().addAll(
+        new Label("Modifica Contatto:"),
+        nomeField,
+        cognomeField,
+        telefonoBox,
+        emailBox,
+        etichettaField,
+        salvaButton
+    );
+
+    Scene scene = new Scene(layout, 450, 450);
+    stage.setScene(scene);
+    stage.show();
+
 }
 }
