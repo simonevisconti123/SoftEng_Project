@@ -10,7 +10,7 @@ pas,vit,83948237|873847238,paolo.neri@example.com,Conoscente
 anthony,cita,2313324|5435343345,@gmsil|@libero,frate
 anto,vit,1233|4345|566,@gmail.com|@gmail.vomc,amico
 anthony,vita,34523455 347389297 235348957483,@gmail @libero,bro
-
-p,p null,56789null  null null,null ,
-p,p,6,null
-p,p,45 56 67, null null,iuio
+p,p ,56789  , , 
+p,r,6, , ,
+p,s,45 56 67, , 
+as,ds,34444

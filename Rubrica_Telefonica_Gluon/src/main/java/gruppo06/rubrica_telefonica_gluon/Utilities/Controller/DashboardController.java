@@ -409,7 +409,7 @@ private ObservableList<Contatto> contattiObservable = FXCollections.observableAr
          String[] dati = line.split(",");
        
                     // Estrai i dati del contatto
-                    String nome = dati[0].trim();
+                 /*   String nome = dati[0].trim();
                     String cognome = dati[1].trim();
                     String telefono = dati[2].trim();
                     String email = dati[3].trim();
@@ -426,9 +426,29 @@ private ObservableList<Contatto> contattiObservable = FXCollections.observableAr
                       
                     // Crea un oggetto Contatto
                    listaContatti.put(contatto.getNome()+" "+contatto.getCognome(), contatto);
+                    */
+                 String nome = (dati.length > 0 && !dati[0].trim().isEmpty()) ? dati[0].trim() : null;
+                String cognome = (dati.length > 1 && !dati[1].trim().isEmpty()) ? dati[1].trim() : null;
+                String telefono = (dati.length > 2 && !dati[2].trim().isEmpty()) ? dati[2].trim() : null;
+                String email = (dati.length > 3 && !dati[3].trim().isEmpty()) ? dati[3].trim() : null;
+                String etichetta = (dati.length > 4 && !dati[4].trim().isEmpty()) ? dati[4].trim() : null;
+
+                // Crea un oggetto Contatto anche se alcuni campi sono mancanti
+                Contatto contatto = new Contatto(
+                    nome != null ? nome : "Nome non disponibile",    // Imposta un nome di default
+                    cognome != null ? cognome : "Cognome non disponibile",  // Imposta un cognome di default
+                    telefono != null ? Arrays.asList(telefono) : new ArrayList<>(),  // Usa una lista vuota se non c'è telefono
+                    email != null ? Arrays.asList(email) : new ArrayList<>(),  // Usa una lista vuota se non c'è email
+                    etichetta != null ? etichetta : " "  // Imposta un'etichetta di default
+                );
+                
+                // Aggiungi il contatto alla TreeMap
+                listaContatti.put((nome != null ? nome : "Nome non disponibile") + " " + (cognome != null ? cognome : "Cognome non disponibile"), contatto);
+            
               // Contatto trovato, esci dal ciclo
             }
-        }
+                 
+            }
         
     } catch (IOException e) {
         System.err.println("Errore durante la lettura del file: " + e.getMessage());
@@ -492,14 +512,10 @@ private ObservableList<Contatto> contattiObservable = FXCollections.observableAr
             if (!email2.isEmpty()) {
                 if (!emailsFormat.isEmpty()) emailsFormat += " ";
                 emailsFormat += email2;
-            }else{
-                emailsFormat +=" "+null ;
             }
             if (!email3.isEmpty()) {
                   if (!emailsFormat.isEmpty()) emailsFormat += " ";
                 emailsFormat += email3;
-            }else{
-                emailsFormat += " "+null ;
             }
             if (!emailsFormat.isEmpty()) {
                 if (contattoFormattato.length() > 0) contattoFormattato.append(",");
