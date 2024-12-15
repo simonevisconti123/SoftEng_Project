@@ -64,6 +64,8 @@ public class ProfileSelectionController implements Initializable{
     //ATTRIBUTI
     private final String folderDataSharing = System.getProperty("user.dir") + "/src/main/resources/DataSharing/";
     private String pathProfiloSelezionato;
+    @FXML
+    private Button eliminaProfilo;
     
     //METODI DI CONTROLLO
     @Override
@@ -228,7 +230,13 @@ public class ProfileSelectionController implements Initializable{
         } else {
                 System.out.println("La directory specificata non esiste o non è una cartella.");
                }
-        ListaProf.setOnAction(e -> {String selectedFile = ListaProf.getValue();});
+        
+        ListaProf.setOnAction(e -> {String selectedFile = ListaProf.getValue();
+                eliminaProfilo.setDisable(false);
+            selezionaProfiloButton.setDisable(false);
+                ;});
+        
+        
     }
 
     @FXML
@@ -238,7 +246,8 @@ public class ProfileSelectionController implements Initializable{
         // Verifica che l'utente abbia selezionato qualcosa
         String sceltaUtente = ListaProf.getSelectionModel().getSelectedItem();
         pathProfiloSelezionato = System.getProperty("user.dir") + "/src/main/resources/profiliSalvati/" + sceltaUtente + ".txt";
-
+          
+           
         //messaggio errore in caso di mancata selezione
         if (sceltaUtente == null || sceltaUtente.isEmpty()) {
             System.out.println("Nessun profilo selezionato");

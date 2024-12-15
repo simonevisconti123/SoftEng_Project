@@ -22,7 +22,7 @@ public class MainClass extends Application{
     private static Scene scene;
       @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("ProfileSelectionView"), 800, 600);
+        scene = new Scene(loadFXML("ProfileSelectionView"), 1000, 600);
         stage.setScene(scene);
         stage.show();
     }

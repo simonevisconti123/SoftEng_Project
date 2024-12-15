@@ -41,6 +41,7 @@ import java.util.stream.Collectors;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -56,6 +57,8 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.InputMethodEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -84,8 +87,6 @@ public class DashboardController implements Initializable {
     @FXML
     private TextField searchBar;
     @FXML
-    private Button searchButton;
-    @FXML
     private TableView<Contatto> Table;
     @FXML
     private TableColumn<Contatto, String> NameCln;
@@ -93,6 +94,14 @@ public class DashboardController implements Initializable {
     private TableColumn<Contatto, String> SurnameCln;
     @FXML
     private TableColumn<Contatto, String> numberCln;
+    @FXML
+    private TableColumn<Contatto, String> numberCln2;
+    @FXML
+    private TableColumn<Contatto, String> numberCln3;
+    @FXML
+    private TableColumn<Contatto, String> emailClm2;
+    @FXML
+    private TableColumn<Contatto, String> emailClm3;
     @FXML
     private TableColumn<Contatto, String> emailClm;
     @FXML
@@ -105,8 +114,11 @@ public class DashboardController implements Initializable {
     private String pathProfiloCaricato;
     private TreeMap<String,Contatto> listaContatti=new TreeMap<>();
     private Rubrica rubrica;
-    private Contatto contatto = new Contatto(null,null,null,null,null);
+    private Contatto contatto = new Contatto(null,null,null,null,null,null,null,null,null);
     private ObservableList<Contatto> contattiObservable = FXCollections.observableArrayList();
+    @FXML
+    private Button resetSearchButton;
+  
 
     
     //METODI DI CONTROLLO
@@ -153,11 +165,18 @@ public class DashboardController implements Initializable {
     });
 
     // Configura la barra di ricerca
- 
+    searchBar.setOnMouseClicked(event->{
+        ricercaContatto(null);
+    });
         //SVUOTAMENTO FILE "profileSelectionFile"
         svuotaFile(profileSelectionFilePath);
     }
-    
+    @FXML
+private void resetSearch(ActionEvent event) {
+    searchBar.clear();// Cancella il testo nella barra di ricerca
+    resetSearchButton.setDisable(true);
+    Table.refresh();   // Aggiorna la tabella
+}
     @FXML
     public void cambiaProfilo(ActionEvent event) throws IOException {
         MainClass.setRoot("ProfileSelectionView");
@@ -286,9 +305,10 @@ public class DashboardController implements Initializable {
             } else {
                 //salvataggio dei dati o altre azioni necessarie
                 //-creazione oggetto Contatto
-                contatto = new Contatto (nome, cognome, Arrays.asList(telefono1, telefono2, telefono3), Arrays.asList(email1, email2, email3), etichetta);
+                contatto = new Contatto (nome, cognome, telefono1, telefono2, telefono3, email1, email2, email3, etichetta);
                 //-aggiunta contatto alla collection di contatti
                 listaContatti.put(nome + " " + cognome, contatto);
+                contattiObservable.add(contatto);
                 //aggiunta contatto su file di salvataggio del profilo
                 addContactToFile(this.pathProfiloCaricato, contatto);
                 //-messaggio su console
@@ -320,38 +340,50 @@ public class DashboardController implements Initializable {
 
     @FXML
     private void ricercaContatto(ActionEvent event) {
-       if (searchBar == null) {
-        contattiObservable.setAll(listaContatti.values());
-    } else {
-        String filtroLower = searchBar.getText();
+   FilteredList<Contatto> contattiFiltrati = new FilteredList<>(contattiObservable, p -> true);
 
-        Contatto contattoEsatto=rubrica.RicercaContatto(searchBar.getText());
-        if (contattoEsatto != null) {
-            contattiObservable.setAll(contattoEsatto);
-        } else {
-            List<Contatto> contattiFiltrati = listaContatti.values().stream()
-                .filter(contatto -> contatto.getNome().toLowerCase().contains(filtroLower) ||
-                                    contatto.getCognome().toLowerCase().contains(filtroLower))
-                .collect(Collectors.toList());
-            contattiObservable.setAll(contattiFiltrati);
-        }
-    }
+    // Aggiungi un listener al campo di ricerca
+    searchBar.textProperty().addListener((observable, oldValue, newValue) -> {
+        contattiFiltrati.setPredicate(contatto -> {
+            // Se il campo di ricerca è vuoto, mostra tutti i contatti
+            if (newValue == null || newValue.isEmpty()) {
+                return true;
+            }
+
+            // Confronta il nome, cognome, telefono o email del contatto con il testo di ricerca
+            String lowerCaseFilter = newValue.toLowerCase();
+
+            if (contatto.getNome().toLowerCase().contains(lowerCaseFilter)) {
+                return true; // Nome corrisponde
+            } else if (contatto.getCognome().toLowerCase().contains(lowerCaseFilter)) {
+                return true; // Cognome corrisponde
+             // Email corrisponde
+            }
+
+            return false; // Nessuna corrispondenza
+        });
+    });
+resetSearchButton.setDisable(false);
+    // Collega la FilteredList alla TableView
+    Table.setItems(contattiFiltrati);
 }
+
     
-    @FXML
     public void showRubrica(Rubrica ru){
         NameCln.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNome()));
     SurnameCln.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCognome()));
-    numberCln.setCellValueFactory(cellData -> new SimpleStringProperty(
-            String.join("  ", cellData.getValue().getNumeriTelefono()))); // Unisci numeri di telefono
-    emailClm.setCellValueFactory(cellData -> new SimpleStringProperty(
-            String.join("   ", cellData.getValue().getEmails()))); // Unisci email
+    numberCln.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNumeroTelefono1()));
+    numberCln2.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNumeroTelefono2()));
+    numberCln3.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNumeroTelefono3()));
+             // Unisci numeri di telefono
+    emailClm.setCellValueFactory(cellData -> new SimpleStringProperty( cellData.getValue().getEmail1()));
+emailClm2.setCellValueFactory(cellData -> new SimpleStringProperty( cellData.getValue().getEmail2()));
+emailClm3.setCellValueFactory(cellData -> new SimpleStringProperty( cellData.getValue().getEmail3()));// Unisci email
    EtichettaCln.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEtichetta()));
    ObservableList<Contatto> contattiList = FXCollections.observableArrayList(ru.getListaContatti().values());
     Table.setItems(contattiList);
     }
     
-    @FXML
     private void mostraDettagliContatto(Contatto contatto) {
     if (contatto == null) return;
 
@@ -371,62 +403,27 @@ public class DashboardController implements Initializable {
     cognomeLayout.setAlignment(Pos.CENTER); // Allineamento centrale
 
     // Mostra i numeri di telefono uno sotto l'altro
-    VBox telefonoBox = new VBox(5);
-    telefonoBox.setAlignment(Pos.CENTER); // Allineamento centrale
-    
+   // Allineamento centrale
+    HBox telefono1Layout = creaCampo("Numero di telefono n°1", contatto.getNumeroTelefono1());
+    telefono1Layout.setAlignment(Pos.CENTER);
+    HBox telefono2Layout = creaCampo("Numero di telefono n°2", contatto.getNumeroTelefono2());
+    telefono2Layout.setAlignment(Pos.CENTER);
+    HBox telefono3Layout = creaCampo("Numero di telefono n°3", contatto.getNumeroTelefono3());
+    telefono3Layout.setAlignment(Pos.CENTER);
         // Ottieni i numeri di telefono
-        List<String> numeriTelefonoList = contatto.getNumeriTelefono();
-        String telefono1 = numeriTelefonoList.get(0);
-        String telefono2 = numeriTelefonoList.get(1);
-        String telefono3 = numeriTelefonoList.get(2);
-
-        // Aggiungi i numeri di telefono al layout se esistono
-        // Aggiungi i numeri di telefono al layout se esistono
-        if (telefono1 == null)
-            telefonoBox.getChildren().add(creaCampo("Telefono 1", "Non inserito"));
-        else
-            telefonoBox.getChildren().add(creaCampo("Telefono 1", telefono1));
-
-        if (telefono2 == null)
-            telefonoBox.getChildren().add(creaCampo("Telefono 2", "Non inserito"));
-        else
-            telefonoBox.getChildren().add(creaCampo("Telefono 2", telefono2));
-
-        if (telefono3 == null)
-            telefonoBox.getChildren().add(creaCampo("Telefono 3", "Non inserito"));
-        else
-            telefonoBox.getChildren().add(creaCampo("Telefono 3", telefono3));
-
-        telefonoBox.setPadding(new Insets(10, 0, 0, 0)); // (top, right, bottom, left)
+    HBox email1Layout = creaCampo("Email n°1", contatto.getEmail1());
+    email1Layout.setAlignment(Pos.CENTER);
+HBox email2Layout = creaCampo("Email n°2", contatto.getEmail2());
+    email2Layout.setAlignment(Pos.CENTER);
+    HBox email3Layout = creaCampo("Email n°3", contatto.getEmail3());
+    email3Layout.setAlignment(Pos.CENTER);
+      // (top, right, bottom, left)
 
 
     // Mostra le email una sotto l'altra
-    VBox emailBox = new VBox(5);
-    emailBox.setAlignment(Pos.CENTER); // Allineamento centrale
+  // Allineamento centrale
     
-        // Ottieni le email, se ci sono
-        List<String> emailList = contatto.getEmails();
-        String email1 = emailList.get(0);
-        String email2 = emailList.get(1);
-        String email3 = emailList.get(2);
-        
-        // Aggiungi le email al layout se esistono altrimenti specifica che non ci sono
-        if (email1 == null)
-            emailBox.getChildren().add(creaCampo("Email 1", "Non inserito"));
-        else
-            emailBox.getChildren().add(creaCampo("Email 1", email1));
-
-        if (email2 == null)
-            emailBox.getChildren().add(creaCampo("Email 2", "Non inserito"));
-        else
-            emailBox.getChildren().add(creaCampo("Email 2", email2));
-
-        if (email3 == null)
-            emailBox.getChildren().add(creaCampo("Email 3", "Non inserito"));
-        else
-            emailBox.getChildren().add(creaCampo("Email 3", email3));
-
-        emailBox.setPadding(new Insets(10, 0, 0, 0)); // (top, right, bottom, left
+      
 
     // Etichetta
     HBox etichettaLayout = creaCampo("Etichetta", contatto.getEtichetta());
@@ -445,6 +442,7 @@ public class DashboardController implements Initializable {
     eliminaButton.setStyle("-fx-background-color: #ea0000; -fx-text-fill: white;");
     eliminaButton.setOnAction(e -> {
         eliminaContatto(contatto, stage);
+        stage.close();
     });
 
     // Creazione di un HBox per disporre i pulsanti uno accanto all'altro
@@ -452,11 +450,12 @@ public class DashboardController implements Initializable {
     buttonsLayout.setAlignment(Pos.CENTER); // Allinea i pulsanti al centro
     buttonsLayout.setPadding(new Insets(30, 30, 35, 30)); // (top, right, bottom, left)
 
-    layout.getChildren().addAll(nomeLayout, cognomeLayout, telefonoBox, emailBox, etichettaLayout, buttonsLayout);
+    layout.getChildren().addAll(nomeLayout, cognomeLayout, telefono1Layout,telefono2Layout,telefono3Layout,email1Layout,email2Layout,email3Layout, etichettaLayout, buttonsLayout);
 
     Scene scene = new Scene(layout, 400, 450);
     stage.setScene(scene);
     stage.show();
+    
 }
 
     // Metodo helper per creare un campo con label in grassetto e textField non modificabile
@@ -545,24 +544,20 @@ public class DashboardController implements Initializable {
                         String cognome = (attributoContatto[1].equals("null")) ? null : attributoContatto[1].trim();
 
                         // Gestisci il gruppo di numeri di telefono
-                        List<String> phoneNumberList = new ArrayList<>();
+                        
                         String telefono1 = (attributoContatto[2].equals("null")) ? null : attributoContatto[2].trim();
                         String telefono2 = (attributoContatto[3].equals("null")) ? null : attributoContatto[3].trim();
                         String telefono3 = (attributoContatto[4].equals("null")) ? null : attributoContatto[4].trim();
 
-                        phoneNumberList.add(telefono1);
-                        phoneNumberList.add(telefono2);
-                        phoneNumberList.add(telefono3);
+                     
 
                         // Gestisci il gruppo di email
-                        List<String> emailList = new ArrayList<>();
+                      
                         String email1 = (attributoContatto[5].equals("null")) ? null : attributoContatto[5].trim();
                         String email2 = (attributoContatto[6].equals("null")) ? null : attributoContatto[6].trim();
                         String email3 = (attributoContatto[7].equals("null")) ? null : attributoContatto[7].trim();
 
-                        emailList.add(email1);
-                        emailList.add(email2);
-                        emailList.add(email3);
+                        
 
                         // Gestisci l'etichetta (ultimo gruppo)
                         String etichetta = (attributoContatto[8].equals("null")) ? null : attributoContatto[8];
@@ -571,7 +566,7 @@ public class DashboardController implements Initializable {
                         }
                  
                         //creazione oggetto contatto
-                        Contatto contatto = new Contatto (nome,cognome,phoneNumberList,emailList,etichetta);
+                        Contatto contatto = new Contatto (nome,cognome,telefono1,telefono2,telefono3,email1,email2,email3,etichetta);
 
                         // Aggiungi il contatto alla TreeMap
                         listaContatti.put(contatto.getNome() + " " + contatto.getCognome(), contatto);
@@ -667,14 +662,14 @@ public class DashboardController implements Initializable {
             TextField cognomeField = new TextField(contatto.getCognome());
 
             // Campo per 3 numeri di telefono
-            TextField telefonoField1 = new TextField(contatto.getNumeriTelefono().size() > 0 ? contatto.getNumeriTelefono().get(0) : "");
-            TextField telefonoField2 = new TextField(contatto.getNumeriTelefono().size() > 1 ? contatto.getNumeriTelefono().get(1) : "");
-            TextField telefonoField3 = new TextField(contatto.getNumeriTelefono().size() > 2 ? contatto.getNumeriTelefono().get(2) : "");
+            TextField telefonoField1 = new TextField(contatto.getNumeroTelefono1());
+            TextField telefonoField2 = new TextField(contatto.getNumeroTelefono2());
+            TextField telefonoField3 = new TextField(contatto.getNumeroTelefono3());
 
             // Campo per 3 email
-            TextField emailField1 = new TextField(contatto.getEmails().size() > 0 ? contatto.getEmails().get(0) : "");
-            TextField emailField2 = new TextField(contatto.getEmails().size() > 1 ? contatto.getEmails().get(1) : "");
-            TextField emailField3 = new TextField(contatto.getEmails().size() > 2 ? contatto.getEmails().get(2) : "");
+            TextField emailField1 = new TextField(contatto.getEmail1());
+            TextField emailField2 = new TextField(contatto.getEmail2());
+            TextField emailField3 = new TextField(contatto.getEmail3());
 
             // Etichetta
             TextField etichettaField = new TextField(contatto.getEtichetta());
@@ -730,7 +725,14 @@ public class DashboardController implements Initializable {
             // Crea un pulsante per salvare con margine
             Button salvaButton = new Button("Salva");
             salvaButton.setPadding(new Insets(20,20,20,20));  // Padding interno al pulsante
-            salvaButton.setOnAction(e -> salvaModifiche(contatto, nomeField, cognomeField, telefonoField1, telefonoField2, telefonoField3, emailField1, emailField2, emailField3, etichettaField, stage));
+            salvaButton.setOnAction(e -> {
+                try {
+                    salvaModifiche(contatto, nomeField, cognomeField, telefonoField1, telefonoField2, telefonoField3, emailField1, emailField2, emailField3, etichettaField, stage);
+                } catch (IOException ex) {
+                    Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                stage.close();
+            });
 
             // Posiziona il pulsante in basso a sinistra
             HBox salvaBox = new HBox(salvaButton);
@@ -751,7 +753,7 @@ public class DashboardController implements Initializable {
         private void salvaModifiche(Contatto contatto, TextField nomeField, TextField cognomeField, 
                                     TextField telefonoField1, TextField telefonoField2, TextField telefonoField3, 
                                     TextField emailField1, TextField emailField2, TextField emailField3, 
-                                    TextField etichettaField, Stage stage) throws IOException {
+                                    TextField etichettaField, Stage stage) throws IOException{
             //MODIFICHE DEL MODEL 
                 //creazione contatto temporeaneo che salva il contatto prima della modifica, esso verrà eliminato nel file e sostituito con quello modificato
                 Contatto contattoTemp = contatto.clone();
@@ -761,14 +763,19 @@ public class DashboardController implements Initializable {
                 contatto.setCognome(cognomeField.getText());
 
                 // Imposta i numeri di telefono come lista
-                contatto.setNumeriTelefono(Arrays.asList(telefonoField1.getText(), telefonoField2.getText(), telefonoField3.getText()));
-
+                contatto.setNumeroTelefono1(telefonoField1.getText());
+                 contatto.setNumeroTelefono2(telefonoField2.getText());
+                  contatto.setNumeroTelefono3(telefonoField3.getText());
                 // Imposta le email come lista
-                contatto.setEmails(Arrays.asList(emailField1.getText(), emailField2.getText(), emailField3.getText()));
+                contatto.setEmail1(emailField1.getText());
+                contatto.setEmail2(emailField2.getText());
+                contatto.setEmail3(emailField3.getText());
 
                 // Imposta l'etichetta
                 contatto.setEtichetta(etichettaField.getText());
-
+                listaContatti.replace(contattoTemp.getNome()+" "+contattoTemp.getCognome(), contatto);
+                ObservableList<Contatto> contattiList =FXCollections.observableArrayList(listaContatti.values());
+                 Table.setItems(contattiList);
                 // Aggiorna la Tabella se necessario
                 Table.refresh();  // Questo aggiorna la tabella con i nuovi dati
 
@@ -793,9 +800,12 @@ public class DashboardController implements Initializable {
                 Table.refresh(); // Supponiamo che tu abbia un metodo per aggiornare la tabella
                 // Chiudi la finestra di dettagli
                 stage.close();
+                
             
             //MODIFICA DEL FILE
                 eliminaContattoDaFile(this.pathProfiloCaricato, contatto);
         }
+
+  
     
 }

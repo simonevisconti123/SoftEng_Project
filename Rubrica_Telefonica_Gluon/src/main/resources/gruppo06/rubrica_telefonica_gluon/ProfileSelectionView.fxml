@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
@@ -21,22 +22,52 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gruppo06.rubrica_telefonica_gluon.Utilities.Controller.ProfileSelectionController">
    <children>
-      <HBox prefHeight="600.0" prefWidth="800.0">
+      <HBox prefHeight="600.0" prefWidth="800.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="1.0">
          <children>
             <Pane fx:id="profileListPane" prefHeight="600.0" prefWidth="726.0">
                <children>
-                  <ComboBox fx:id="ListaProf" layoutX="31.0" layoutY="32.0" onAction="#showProfile" prefHeight="61.0" prefWidth="337.0" promptText="Lista profili" />
-                  <Button fx:id="selezionaProfiloButton" layoutX="51.0" layoutY="121.0" mnemonicParsing="false" onAction="#selezionaProfilo" prefHeight="21.0" prefWidth="122.0" text="Conferma" />
-                  <Button fx:id="eliminaProfilo" layoutX="232.0" layoutY="121.0" mnemonicParsing="false" onAction="#eliminaProfilo" prefHeight="25.0" prefWidth="122.0" text="Elimina profilo" />
+                  <VBox prefHeight="596.0" prefWidth="461.0" spacing="30.0">
+                     <children>
+                        <ComboBox fx:id="ListaProf" onAction="#showProfile" prefHeight="61.0" prefWidth="337.0" promptText="Lista profili">
+                           <padding>
+                              <Insets left="100.0" />
+                           </padding>
+                           <VBox.margin>
+                              <Insets left="60.0" />
+                           </VBox.margin>
+                        </ComboBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="95.0">
+                           <children>
+                              <Button fx:id="selezionaProfiloButton" disable="true" mnemonicParsing="false" onAction="#selezionaProfilo" prefHeight="21.0" prefWidth="122.0" text="Conferma" />
+                              <Button fx:id="eliminaProfilo" disable="true" mnemonicParsing="false" onAction="#eliminaProfilo" prefHeight="25.0" prefWidth="122.0" text="Elimina profilo" />
+                           </children>
+                           <padding>
+                              <Insets left="60.0" />
+                           </padding>
+                        </HBox>
+                     </children>
+                     <padding>
+                        <Insets top="120.0" />
+                     </padding>
+                  </VBox>
                </children>
             </Pane>
             <Pane fx:id="buttonProfilePane" prefHeight="600.0" prefWidth="600.0" style="-fx-background-color: #9c9c9c;">
                <children>
-                  <Button fx:id="creaProfilo" layoutX="104.0" layoutY="120.0" mnemonicParsing="false" onAction="#creazioneProfilo" prefHeight="50.0" prefWidth="130.0" text="Crea profilo" />
-                  <Button fx:id="importaProfilo" layoutX="102.0" layoutY="187.0" mnemonicParsing="false" onAction="#importazioneProfilo" prefHeight="50.0" prefWidth="130.0" text="Importa profilo" />
+                  <Button fx:id="creaProfilo" layoutX="150.0" layoutY="120.0" mnemonicParsing="false" onAction="#creazioneProfilo" prefHeight="50.0" prefWidth="130.0" text="Crea profilo">
+                     <padding>
+                        <Insets left="1.0" right="1.0" />
+                     </padding></Button>
+                  <Button fx:id="importaProfilo" layoutX="150.0" layoutY="186.0" mnemonicParsing="false" onAction="#importazioneProfilo" prefHeight="50.0" prefWidth="130.0" text="Importa profilo">
+                     <padding>
+                        <Insets left="1.0" right="1.0" />
+                     </padding></Button>
                </children>
             </Pane>
          </children>
+         <padding>
+            <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
+         </padding>
       </HBox>
    </children>
 </AnchorPane>
