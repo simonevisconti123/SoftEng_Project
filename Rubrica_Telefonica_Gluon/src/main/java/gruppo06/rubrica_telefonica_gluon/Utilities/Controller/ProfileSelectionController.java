@@ -1,4 +1,3 @@
-
 /**
  * @file ProfileSelectionController.java
  * @brief Controller della selezione del profilo
@@ -65,6 +64,8 @@ public class ProfileSelectionController implements Initializable{
     //ATTRIBUTI
     private final String folderDataSharing = System.getProperty("user.dir") + "/src/main/resources/DataSharing/";
     private String pathProfiloSelezionato;
+    @FXML
+    private Button eliminaProfilo;
     
     //METODI DI CONTROLLO
     @Override
@@ -167,7 +168,7 @@ public class ProfileSelectionController implements Initializable{
                  
             File file = new File(folder, username + ".txt");
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-                writer.write("Username = " + username);
+                writer.write("Username = " + username + "\n");
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("Errore nella creazione del file.");
@@ -229,7 +230,13 @@ public class ProfileSelectionController implements Initializable{
         } else {
                 System.out.println("La directory specificata non esiste o non è una cartella.");
                }
-        ListaProf.setOnAction(e -> {String selectedFile = ListaProf.getValue();});
+        
+        ListaProf.setOnAction(e -> {String selectedFile = ListaProf.getValue();
+                eliminaProfilo.setDisable(false);
+            selezionaProfiloButton.setDisable(false);
+                ;});
+        
+        
     }
 
     @FXML
@@ -239,7 +246,8 @@ public class ProfileSelectionController implements Initializable{
         // Verifica che l'utente abbia selezionato qualcosa
         String sceltaUtente = ListaProf.getSelectionModel().getSelectedItem();
         pathProfiloSelezionato = System.getProperty("user.dir") + "/src/main/resources/profiliSalvati/" + sceltaUtente + ".txt";
-
+          
+           
         //messaggio errore in caso di mancata selezione
         if (sceltaUtente == null || sceltaUtente.isEmpty()) {
             System.out.println("Nessun profilo selezionato");
@@ -253,7 +261,7 @@ public class ProfileSelectionController implements Initializable{
         System.out.println("path del profilo selezionato: " + pathProfiloSelezionato);
         
         //SALVATAGGIO SCELTA SU FILE
-        System.out.println("scrittura path del profilo selezionato sul file _profileFileSelection.txt_");
+        System.out.println("scrittura path del profilo selezionato sul file profileFileSelection.txt");
         DataShare("profileSelectionFile", pathProfiloSelezionato, "Path del profilo selezionato: ");
         
         //PASSAGGIO ALLA PROSSIMA VIEW
@@ -293,6 +301,12 @@ public class ProfileSelectionController implements Initializable{
         alert.setContentText(Content);
         alert.showAndWait();
     }
-
-}                                                             
-
+    
+    public static void WarningAlertPage(String Title, String Header, String Content){
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle(Title);
+        alert.setHeaderText(Header);
+        alert.setContentText(Content);
+        alert.showAndWait();
+    }
+}
