@@ -5,9 +5,10 @@ import gruppo06.rubrica_telefonica_gluon.*;
 /**
  * @file Profilo.java
  * @brief Classe profilo
+ * 
  * Il file in questione contiene le informazioni legate al profilo, entità che presenta un nome e una rubrica associata
  * 
- * @author AnthonyVita
+ * @author Simone Visconti
  */
 
 
@@ -19,9 +20,9 @@ public class Profilo {
 
     
     /**
-     * @brief Costruttore del programma
+     * @brief Costruttore del Profilo
      * 
-     * Il costruttore del programma, essenziale per istanziare il profilo
+     * Il costruttore del Profilo, essenziale per istanziare il profilo
      */
     
     public Profilo(String nome_Profilo, Rubrica RubricaAssociata) {
@@ -37,47 +38,28 @@ public class Profilo {
      */
     
     public String getNomeProfilo() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return this.nome_Profilo;
     }
 
     public Rubrica getRubricaAssociata() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return this.RubricaAssociata;
     }
-
+    
     
     
     /**
-     * @brief Metodi di profilo
-     * 
-     * Di seguito sono presenti gli scheletri dei metodi di profilo, descritti singolarmente
-     * 
-     * ImportazioneProfilo: consente di importare un profilo da un file esterno
-     * SelezioneProfilo: consente di selezionare uno tra i profili disponibili
-     * CreazioneProfilo: consente di creare un profilo da zero, fornendo il nome del profilo
-     * EliminazioneProfilo: consente di eliminare un profilo fornendo il nome dello stesso
-     */
-    public void ImportazioneProfilo() {
-    }
-
-    public String SelezioneProfilo(String nome_Profilo) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public void CreazioneProfilo(String nome_Profilo) {
-    }
-
-    public String EliminazioneProfilo(String nome_Profilo) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    /**
-     * @brief sezione dei metodi set
+     * @brief Sezione dei metodi set
      * 
      * La sezione del programma che seque questo commento è composta dai metodi set dei singoli attributi
      * 
-     * @param[in] nome_Profilo è un parametro necessari al corretto funzionamento dei metodo
+     * @param[in] nome_Profilo e RubricaAssociata sono tutti parametri necessari al corretto funzionamento del Profilo
      */
-    public String setNome_Profilo(String nome_Profilo) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    
+    public void setNome_Profilo(String nome_Profilo) {
+        this.nome_Profilo = nome_Profilo;
+    }
+
+    public void setRubricaAssociata(gruppo06.rubrica_telefonica_gluon.Model.Rubrica RubricaAssociata) {
+        this.RubricaAssociata = RubricaAssociata;
     }
 }

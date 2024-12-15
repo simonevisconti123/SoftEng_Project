@@ -11,7 +11,7 @@ import java.util.List;
  * 
  * Sono attualmente presenti gli attrubuti nome, cognome, da 1 a 3 numeri di telefono, da 1 a 3 email e un'etichetta
  * 
- * @author AnthonyVita
+ * @author Simone Visconti
  */
 
 public class Contatto implements Cloneable{
@@ -35,9 +35,9 @@ public class Contatto implements Cloneable{
     
     
     /**
-     * @brief Costruttore del programma
+     * @brief Costruttore del contatto
      * 
-     * Il costruttore del programma, essenziale per istanziare il singolo contatto
+     * Il costruttore del contatto, essenziale per istanziare il singolo contatto
      */
     
  public Contatto(String Nome, String Cognome, String numeroTelefono1, String numeroTelefono2, String numeroTelefono3, String email1, String email2, String email3, String Etichetta) {
@@ -108,7 +108,7 @@ public class Contatto implements Cloneable{
      * 
      * La sezione del programma che seque questo commento è composta dai metodi set dei singoli attributi
      * 
-     * @param[in] Nome, Cognome, NumeriTelefono, Emails, Etichetta sono tutti parametri necessari al corretto funzionamento dei metodi
+     * @param[in] Nome, Cognome, NumeriTelefono, Emails, Etichetta sono tutti parametri necessari al corretto funzionamento di Contatto
      */
     
     

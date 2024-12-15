@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['emailnonvalidaexception_0',['EmailNonValidaException',['../classgruppo06_1_1rubricatelefonica_1_1_utilities_1_1_exceptions_1_1_email_non_valida_exception.html',1,'gruppo06::rubricatelefonica::Utilities::Exceptions']]]
+  ['mainclass_0',['MainClass',['../classgruppo06_1_1rubrica__telefonica__gluon_1_1_main_class.html',1,'gruppo06::rubrica_telefonica_gluon']]]
 ];

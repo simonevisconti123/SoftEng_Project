@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['importprofilecontroller_2ejava_0',['ImportProfileController.java',['../_import_profile_controller_8java.html',1,'']]]
+  ['rubrica_2ejava_0',['Rubrica.java',['../_rubrica_8java.html',1,'']]]
 ];

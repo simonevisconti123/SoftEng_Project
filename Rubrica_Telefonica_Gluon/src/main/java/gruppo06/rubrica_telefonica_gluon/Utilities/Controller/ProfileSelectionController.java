@@ -1,10 +1,10 @@
 /**
  * @file ProfileSelectionController.java
- * @brief Controller della selezione del profilo
- *
- * Il file in questione contiene il controller per la funzionalità di selezione del profilo
+ * @brief Controller per la selezione del profilo
  * 
- * @author SimoneVisconti
+ * La classe in questione contiene i metodi e parametri necessari al corretto funzionamento dell'interfaccia di creazione, selezione e importazione del profilo utente
+ *
+ * @author Simone Visconti
  */
 
 package gruppo06.rubrica_telefonica_gluon.Utilities.Controller;
@@ -39,11 +39,6 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-/**
- * FXML Controller class
- *
- * @author Anthony
- */
 
 public class ProfileSelectionController implements Initializable{
 
@@ -67,13 +62,24 @@ public class ProfileSelectionController implements Initializable{
     @FXML
     private Button eliminaProfilo;
     
-    //METODI DI CONTROLLO
+    /**
+     * @brief Metodo initialize
+     * 
+     * Il metodo initialize() viene eseguito al caricamento della profile view: è impiegato per il caricamento dei profili tramite il metodo showProfile()
+     * 
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         showProfile(); // Chiamata per popolare la ComboBox all'avvio
         System.out.println("\n" + "PROFILE_SELECTION_CONTROLLER");
     }
     
+    /**
+     * @brief Metodo importazione profilo
+     * 
+     * Il metodo in questione consente di importare un profilo da un file di testo a scelta dell'utente, frutto di esportazione o creazione manuale
+     * 
+     */
     @FXML
     private void importazioneProfilo(ActionEvent event) throws FileNotFoundException, IOException {
         Stage stage = (Stage) buttonProfilePane.getScene().getWindow();
@@ -113,6 +119,12 @@ public class ProfileSelectionController implements Initializable{
             showProfile(); 
     }
     
+    /**
+     * @brief Metodo creazione profilo
+     * 
+     * Il metodo in questione consente di creare un profilo inserendo un nome in un'apposita casella di testo
+     * 
+     */
     @FXML
     private void creazioneProfilo (ActionEvent event) {
     // Ottieni il riferimento alla finestra principale
@@ -179,6 +191,12 @@ public class ProfileSelectionController implements Initializable{
     }
     }
     
+    /**
+     * @brief Metodo elimina profilo
+     * 
+     * Il metodo in questione consente di eliminare un profilo attraverso un tasto presente al di sotto della ComboBox
+     * 
+     */
     @FXML
     public void eliminaProfilo() throws IOException{
         String sceltaUtente = ListaProf.getSelectionModel().getSelectedItem();
@@ -200,6 +218,12 @@ public class ProfileSelectionController implements Initializable{
         
     }
     
+    /**
+     * @brief Metodo mostra profili
+     * 
+     * Il metodo in questione viene lanciato al caricamento del programma e mostra i profili disponibili per la selezione
+     * 
+     */
     @FXML
     public void showProfile(){
     String userDir = System.getProperty("user.dir");
@@ -239,6 +263,12 @@ public class ProfileSelectionController implements Initializable{
         
     }
 
+    /**
+     * @brief Metodo seleziona profilo
+     * 
+     * Il metodo in questione consente di selezionare un profilo dalla lista presente nella ComboBox
+     * 
+     */
     @FXML
     public void selezionaProfilo(ActionEvent event) throws IOException {
         
@@ -272,6 +302,20 @@ public class ProfileSelectionController implements Initializable{
     }
     
     //METODI UTILITIES
+    
+    /**
+     * @brief Metodo data Share
+     * 
+     * Il metodo in questione consente di aggiungere una riga ad un file di testo presente nella cartella dataSharing
+     * 
+     * La stringa che verrà salvata avrà una formattazione del tipo "msg + dataToSave"
+     * 
+     * Questo metodo è impiegato nel passaggio di informazioni tra le due view
+     * 
+     * @param fileName
+     * @param dataToSave
+     * @param msg 
+     */
     public void DataShare(String fileName, String dataToSave, String msg){
         //determina il filePath del DataSharingFile su cui dobbiamo scrivere
         String filePath = folderDataSharing + fileName + ".txt";
@@ -286,6 +330,16 @@ public class ProfileSelectionController implements Initializable{
         }
     }
     
+    
+    /**
+     * @brief Metodo ErrorAlertPage
+     * 
+     * Il metodo in questione mostra un alert box di tipo Error, usato per la verifica nell'inserimento di informazioni obbligatorie
+     * 
+     * @param Title è il titolo del AlertBox
+     * @param Header è l'header del AlertBox
+     * @param Content è il messaggio che sarà presente nel corpo del AlertBox
+     */
     public static void ErrorAlertPage(String Title, String Header, String Content){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(Title);
@@ -294,6 +348,15 @@ public class ProfileSelectionController implements Initializable{
         alert.showAndWait();
     }
     
+    /**
+     * @brief Metodo InformationAlertPage
+     * 
+     * Il metodo in questione mostra un alert box di tipo Information, usato per mostrare un messaggio di conferma delle operazioni effettuate
+     * 
+     * @param Title è il titolo del AlertBox
+     * @param Header è l'header del AlertBox
+     * @param Content è il messaggio che sarà presente nel corpo del AlertBox
+     */
     public static void InformationAlertPage(String Title, String Header, String Content){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(Title);
@@ -302,6 +365,16 @@ public class ProfileSelectionController implements Initializable{
         alert.showAndWait();
     }
     
+    
+    /**
+     * @brief Metodo WarningAlertPage
+     * 
+     * Il metodo in questione mostra un alert box di tipo Warning, usato per mostrare un messaggio a valle dell'annullamento di un'operazione
+     * 
+     * @param Title è il titolo del AlertBox
+     * @param Header è l'header del AlertBox
+     * @param Content è il messaggio che sarà presente nel corpo del AlertBox
+     */
     public static void WarningAlertPage(String Title, String Header, String Content){
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle(Title);
