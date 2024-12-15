@@ -179,12 +179,21 @@ public class ProfileSelectionController implements Initializable{
             }
                  
             File file = new File(folder, username + ".txt");
+                if (file.exists()) {
+                // Mostra un messaggio di errore se il profilo esiste già
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Errore di creazione");
+                alert.setHeaderText("Profilo già esistente");
+                alert.setContentText("Il nome del profilo esiste già. Scegli un altro nome.");
+                alert.showAndWait();
+            } else {
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
                 writer.write("Username = " + username + "\n");
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("Errore nella creazione del file.");
             }
+                }
             ListaProf.getItems().clear();
             showProfile(); 
         }

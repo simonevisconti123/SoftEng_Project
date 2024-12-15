@@ -26,6 +26,8 @@ public class Profilo {
      */
     
     public Profilo(String nome_Profilo, Rubrica RubricaAssociata) {
+        this.nome_Profilo=nome_Profilo;
+        this.RubricaAssociata=RubricaAssociata;
     }
 
     
@@ -59,7 +61,7 @@ public class Profilo {
         this.nome_Profilo = nome_Profilo;
     }
 
-    public void setRubricaAssociata(gruppo06.rubrica_telefonica_gluon.Model.Rubrica RubricaAssociata) {
+    public void setRubricaAssociata(Rubrica RubricaAssociata) {
         this.RubricaAssociata = RubricaAssociata;
     }
 }

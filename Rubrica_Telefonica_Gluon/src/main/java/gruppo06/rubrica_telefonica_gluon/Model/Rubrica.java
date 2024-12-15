@@ -42,7 +42,13 @@ public class Rubrica {
     public TreeMap<String,Contatto>  getListaContatti() {
         return this.listaContatti;
     }
-
+public Contatto RicercaContatto(String nome_cognome) {
+       return this.listaContatti.get(nome_cognome);
+        
+    }
+public void aggiuntaContatto(Contatto c){
+    listaContatti.put(c.getNome()+" "+c.getCognome(), c);
+}
 
     @Override
     public String toString() {

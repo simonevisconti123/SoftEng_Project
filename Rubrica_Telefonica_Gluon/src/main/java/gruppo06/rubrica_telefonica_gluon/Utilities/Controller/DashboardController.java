@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package gruppo06.rubrica_telefonica_gluon.Utilities.Controller;
 
 
@@ -63,7 +68,11 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import sun.applet.Main;
 
-
+/**
+ * FXML Controller class
+ *
+ * @author Anthony
+ */
 public class DashboardController implements Initializable {
 
     //ELEMENTI GRAFICI
@@ -111,15 +120,12 @@ public class DashboardController implements Initializable {
 
     @FXML
     private Button resetSearchButton;
+    @FXML
+    private Label Titolo;
   
 
     
-    /**
-     * @brief Metodo initialize
-     * 
-     * Il metodo initialize() viene eseguito al caricamento della dashboard view: questo legge dal file il profilo da caricare, istanzia gli oggetti necessari e mostra la rubrica
-     * 
-     */
+    //METODI DI CONTROLLO
     @Override
     public void initialize(URL url, ResourceBundle rb) {
        
@@ -144,13 +150,16 @@ public class DashboardController implements Initializable {
         usernameProfilo = this.estraiUsernameProfiloDaFile(pathProfiloCaricato);
         //estrazione rubrica
         rubrica=estraiRubricaDaFile(pathProfiloCaricato);
-        
+        Titolo.setText("La rubrica di "+usernameProfilo);
         //stampe
         System.out.println("USERNAME PROFILO: " + usernameProfilo);
+        
         System.out.println("la rubrica è: "+rubrica);
         
         //VISUALIZZAZIONE DELLA RUBRICA RELATIVA AL PROFILO
         showRubrica(rubrica);
+       // contattiObservable.addAll(listaContatti.values());
+        //Table.setItems(contattiObservable);
         Table.setOnMouseClicked(event -> {
         if (event.getClickCount() == 2) {  // Se il doppio click è avvenuto
             Contatto selectedContact = Table.getSelectionModel().getSelectedItem();
@@ -167,38 +176,17 @@ public class DashboardController implements Initializable {
         //SVUOTAMENTO FILE "profileSelectionFile"
         svuotaFile(profileSelectionFilePath);
     }
-    
-    /**
-     * @brief Metodo reset Search
-     * 
-     * Il metodo in questione resetta la ricerca dei contatti, svuotando la barra di ricerca e riportando la tabella dei contatti al suo stato originale
-     *
-     */
     @FXML
-    private void resetSearch(ActionEvent event) {
+private void resetSearch(ActionEvent event) {
     searchBar.clear();// Cancella il testo nella barra di ricerca
     resetSearchButton.setDisable(true);
     Table.refresh();   // Aggiorna la tabella
 }
-    
-    /**
-     * @brief Metodo cambia profilo
-     * 
-     * Il metodo in questione consente di cambiare il profilo selezionato, riportando l'utente alla view per la selezione del profilo
-     */
     @FXML
     public void cambiaProfilo(ActionEvent event) throws IOException {
         MainClass.setRoot("ProfileSelectionView");
     }
-    /**
-     * @brief Metodo aggiungi contatto
-     * 
-     * Il metodo in questione consente di aggiungere un contatto alla rubrica associata al profilo selezionato
-     * 
-     * È possibile impostare manualmente tutti i campi, tuttavia sono obbligatori solo nome, cognome e un numero di telefono
-     * 
-     * Verrà mostrata un'alert box nel caso in cui non siano inserite le informazioni necessarie
-     */
+
     @FXML
     private void aggiungiContatto(ActionEvent event) throws IOException {
     // Ottieni il riferimento alla finestra principale
@@ -333,11 +321,7 @@ public class DashboardController implements Initializable {
             }
         }
     }
-    /**
-     * @brief Metodo esporta rubrica
-     * 
-     * Il metodo in questione consente di esportare la rubrica come file txt in una location a scelta dell'utente con nome personalizzabile
-     */
+
     @FXML
     private void esportaRubrica(ActionEvent event) throws IOException{
         System.out.println("Questo è il path" + pathProfiloCaricato);
@@ -359,11 +343,6 @@ public class DashboardController implements Initializable {
         }
     }
 
-    /**
-     * @brief Metodo ricerca contatto
-     * 
-     * Il metodo in questione consente di ricercare un contatto tramite una sottostringa di nome o cognome
-     */
     @FXML
     private void ricercaContatto(ActionEvent event) {
         
@@ -394,13 +373,7 @@ resetSearchButton.setDisable(false);
     Table.setItems(contattiFiltrati);
 }
 
-    /**
-     * @brief Metodo show rubrica
-     * 
-     * Il metodo in questione popola la tabella con informazioni prese dalla rubrica passata come parametro
-     * 
-     * @param ru È la rubrica dalla quale verranno estratte le informazioni successivamente mostrate nella tabella
-     */
+    
     public void showRubrica(Rubrica ru){
         NameCln.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNome()));
     SurnameCln.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCognome()));
@@ -415,13 +388,7 @@ emailClm3.setCellValueFactory(cellData -> new SimpleStringProperty( cellData.get
    contattiObservable = FXCollections.observableArrayList(ru.getListaContatti().values());
     Table.setItems(contattiObservable);
     }
-    /**
-     * @brief Metodo mostra dettagli contatto
-     * 
-     * Il metodo in questione crea una scena temporanea che mostra i dettagli del contatto e consente di procedere con l'eliminazione o modifica dello stesso
-     * 
-     * @param contatto È il parametro necessario alla corretta visualizzazione dei dettagli del contatto
-     */
+    
     private void mostraDettagliContatto(Contatto contatto) {
     if (contatto == null) return;
 
@@ -496,16 +463,7 @@ HBox email2Layout = creaCampo("Email n°2", contatto.getEmail2());
     
 }
 
-    
-    /**
-     * @brief Metodo crea campo
-     * 
-     * Metodo helper per creare un campo con label in grassetto e textField non modificabile
-     * 
-     * @param labelText parametro relativo al valore del label
-     * @param textValue textfield vuota non cliccabile
-     * @return 
-     */
+    // Metodo helper per creare un campo con label in grassetto e textField non modificabile
     private HBox creaCampo(String labelText, String textValue) {
         Label label = new Label(labelText + ": ");
         label.setStyle("-fx-font-weight: bold;");
@@ -522,15 +480,13 @@ HBox email2Layout = creaCampo("Email n°2", contatto.getEmail2());
     
     
     //METODI UTILITIES
-    //Metodi manipolazione file
-    /**
-     * @brief Metodo leggi path da file
-     * 
-     * Il metodo in questione consente di estrarre lo username del profilo dal file.txt.
-     * @param filePath Il percorso del file da cui estrarre l'username
-     * @return Il nome letto dal file, o null se non trovato
-    */
-    private String leggiPathDaFile(String filePath) {
+        //Metodi manipolazione file
+        /**
+         * Metodo per estrarre lo username del profilo dal file.txt.
+         * @param filePath Il percorso del file da cui estrarre l'username
+         * @return Il nome letto dal file, o null se non trovato
+         */
+        private String leggiPathDaFile(String filePath) {
             File file = new File(filePath);
             StringBuilder nome = new StringBuilder();
 
@@ -548,12 +504,11 @@ HBox email2Layout = creaCampo("Email n°2", contatto.getEmail2());
             return nome.length() > 0 ? nome.toString() : null;
         }
 
-    /**
-     * @brief Metodo svuota file
-    * Il metodo in questione svuota completamente il file specificato.
-    * @param filePath Il percorso completo del file da svuotare.
-    */
-    public void svuotaFile(String filePath) {
+        /**
+         * Svuota completamente il file specificato.
+         * @param filePath Il percorso completo del file da svuotare.
+         */
+        public void svuotaFile(String filePath) {
                 try (FileWriter writer = new FileWriter(filePath)) {
                     // Il FileWriter senza argomenti di append sovrascrive il file, quindi il file diventa vuoto.
                     writer.write(""); // Scrive una stringa vuota nel file
@@ -561,15 +516,8 @@ HBox email2Layout = creaCampo("Email n°2", contatto.getEmail2());
                     e.printStackTrace();
                 }
             }
-    /**
-     * @brief metodo estrai username profilo da file
-     * 
-     * Il metodo in questione serve per estrarre il nome utente dal file, in quanto non è sempre detto che il nome del file e del profilo coincidano
-     * 
-     * @param profileFilePath È il parametro che specifica la location del file che presenta il nome utente
-     * @return il valore di ritorno del metodo è lo username estratto dal file
-     */
-    public String estraiUsernameProfiloDaFile(String profileFilePath){
+
+        public String estraiUsernameProfiloDaFile(String profileFilePath){
                 String username = null;
 
                 try (BufferedReader reader = new BufferedReader(new FileReader(profileFilePath))) {
@@ -586,15 +534,8 @@ HBox email2Layout = creaCampo("Email n°2", contatto.getEmail2());
 
                 return username;
                 }    
-    /**
-     * @brief Metodo estrai rubrica da file
-     * 
-     * Il metodo in questione costruisce la rubrica dal file indicato dal parametro passato
-     * 
-     * @param pathProfiloCaricato è il path che indica il profilo caricato
-     * @return il valore di ritorno è la rubrica estratta dal file
-     */
-    public Rubrica estraiRubricaDaFile(String pathProfiloCaricato){
+
+        public Rubrica estraiRubricaDaFile(String pathProfiloCaricato){
                 try (BufferedReader br = new BufferedReader(new FileReader(pathProfiloCaricato))) {
                 String line;
                 int i = 0;
@@ -646,15 +587,8 @@ HBox email2Layout = creaCampo("Email n°2", contatto.getEmail2());
            rubrica=new Rubrica(listaContatti);
            return rubrica;
         }
-    /**
-     * @brief Metodo add contact to file
-     * 
-     * Il metodo in questione consente di aggiungere un contatto al file
-     * 
-     * @param pathProfiloCaricato Il parametro che indica il path del profilo attualmente caricato
-     * @param contattoDaSalvare Il parametro che indica il contatto da salvare
-     */
-    public void addContactToFile(String pathProfiloCaricato, Contatto contattoDaSalvare) throws IOException{
+
+        public void addContactToFile(String pathProfiloCaricato, Contatto contattoDaSalvare) throws IOException{
                 try (BufferedWriter writer = new BufferedWriter(new FileWriter(pathProfiloCaricato, true))) {
                     // Scrittura della riga sul file
                     writer.newLine();
@@ -666,15 +600,8 @@ HBox email2Layout = creaCampo("Email n°2", contatto.getEmail2());
                 removeEmptyLinesFromFile(this.pathProfiloCaricato);
                 this.showRubrica(rubrica);
             }
-    /**
-     * @biref Metodo elimina contatto da file
-     * 
-     * Il metodo in questione elimina uno specifico contatto da file
-     * 
-     * @param pathProfiloCaricato Il parametro che indica il path del profilo attualmente caricato
-     * @param contattoDaEliminare Il parametro che indica il contatto da eliminare
-     */
-    public void eliminaContattoDaFile(String pathProfiloCaricato, Contatto contattoDaEliminare){      
+
+        public void eliminaContattoDaFile(String pathProfiloCaricato, Contatto contattoDaEliminare){      
             try {
                 // Leggi tutte le righe del file in una lista
                 File file = new File(pathProfiloCaricato);
@@ -697,14 +624,8 @@ HBox email2Layout = creaCampo("Email n°2", contatto.getEmail2());
                 System.err.println("Errore durante l'eliminazione del contatto dal file: " + e.getMessage());
             }
         }
-    /**
-     * @brief Metodo remove empty lines from file
-     * 
-     * Il metodo in questione rimuove le righe vuote da un file
-     * 
-     * @param filePath Il parametro che indica il path del file
-     */
-    public static void removeEmptyLinesFromFile(String filePath) throws IOException {
+        
+        public static void removeEmptyLinesFromFile(String filePath) throws IOException {
         // Legge tutte le linee dal file
         List<String> lines = Files.readAllLines(Paths.get(filePath));
 
@@ -721,16 +642,11 @@ HBox email2Layout = creaCampo("Email n°2", contatto.getEmail2());
         // Scrive le linee aggiornate nel file sovrascrivendolo
         Files.write(Paths.get(filePath), updatedLines);
     }
-    
-    //Metodi gestione dati
-    /**
-     * @brief Metodo modifica contatto
-     * 
-     * Il metodo in questione rappresenta lo strumeno grafico che consente la modifica di uno specifico contatto
-     * 
-     * @param contatto Il contatto da mostrare a schermo, oggetto della modifica
-     */
-    private void modificaContatto(Contatto contatto, Stage stagePrecedente) {
+        
+        
+        
+        //Metodi gestione dati
+        private void modificaContatto(Contatto contatto, Stage stagePrecedente) {
             // Crea la finestra
             Stage stage = new Stage();
             stage.setTitle("Dettagli Contatto");
@@ -837,14 +753,8 @@ HBox email2Layout = creaCampo("Email n°2", contatto.getEmail2());
             stage.show();
 
         }
-    
-    /**
-     * @brief Metodo salva modifiche
-     * 
-     * Il metodo in questione rappresenta il backend del metodo modifica contatto, che quindi realmente applica le modifiche al contatto selezionato
-     * 
-     */
-    private void salvaModifiche(Contatto contatto, TextField nomeField, TextField cognomeField, 
+
+        private void salvaModifiche(Contatto contatto, TextField nomeField, TextField cognomeField, 
                                     TextField telefonoField1, TextField telefonoField2, TextField telefonoField3, 
                                     TextField emailField1, TextField emailField2, TextField emailField3, 
                                     TextField etichettaField, Stage stage) throws IOException{
@@ -869,9 +779,7 @@ HBox email2Layout = creaCampo("Email n°2", contatto.getEmail2());
                 // Imposta l'etichetta
                 contatto.setEtichetta(etichettaField.getText());
                 String key = contattoTemp.getNome() + " " + contattoTemp.getCognome();
-                String key_nuova = contatto.getNome() + " " + contatto.getCognome();
-              listaContatti.remove(key);
-              listaContatti.put(key_nuova, contatto);
+               listaContatti.replace(key, contatto);
                 contattiObservable =FXCollections.observableArrayList(listaContatti.values());
                contattiFiltrati=new FilteredList<>(contattiObservable, p -> true);
                  Table.setItems(contattiObservable);
@@ -886,16 +794,8 @@ HBox email2Layout = creaCampo("Email n°2", contatto.getEmail2());
                addContactToFile(this.pathProfiloCaricato, contatto);
                   stage.close();  // Chiudi la finestra di modifica
         }
-    
-    /**
-     * @brief Metodo elimina contatto
-     * 
-     * Il metodo in questione consente di eliminare un contatto dalla rubrica
-     * 
-     * @param contatto è il parametro che indica il contatto da eliminare
-     * @param stage è il parametro necessario a modificare lo stage al fine di rendere visivamente gradevole l'eliminazione
-     */
-    private void eliminaContatto(Contatto contatto, Stage stage) {
+
+        private void eliminaContatto(Contatto contatto, Stage stage) {
             if (contatto == null) return;
              
             //MODIFICA MODEL
@@ -917,4 +817,7 @@ HBox email2Layout = creaCampo("Email n°2", contatto.getEmail2());
             //MODIFICA DEL FILE
                 eliminaContattoDaFile(this.pathProfiloCaricato, contatto);
         }
+
+  
+    
 }

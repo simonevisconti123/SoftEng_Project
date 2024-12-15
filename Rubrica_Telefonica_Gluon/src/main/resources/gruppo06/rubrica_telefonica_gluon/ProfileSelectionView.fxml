@@ -26,7 +26,15 @@
          <children>
             <Pane fx:id="profileListPane" prefHeight="600.0" prefWidth="726.0">
                <children>
-                  <VBox prefHeight="596.0" prefWidth="461.0" spacing="30.0">
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="93.0" prefWidth="498.0" text="SELEZIONE PROFILI" textAlignment="CENTER">
+                     <padding>
+                        <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
+                     </padding>
+                     <font>
+                        <Font name="Charter Bold" size="27.0" />
+                     </font>
+                  </Label>
+                  <VBox layoutX="24.0" layoutY="-1.0" prefHeight="596.0" prefWidth="461.0" spacing="30.0">
                      <children>
                         <ComboBox fx:id="ListaProf" onAction="#showProfile" prefHeight="61.0" prefWidth="337.0" promptText="Lista profili">
                            <padding>
@@ -70,4 +78,7 @@
          </padding>
       </HBox>
    </children>
+   <padding>
+      <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
+   </padding>
 </AnchorPane>
