@@ -112,8 +112,8 @@ public class Contatto implements Cloneable{
     
     public String toStringFormatoFile(){
         String contattoFormatoFile = this.Nome + "," + this.Cognome + "," + 
-                    String.join(" ", this.NumeriTelefono) + "," + 
-                    String.join(" ", this.Emails) + "," + 
+                    String.join(",", this.NumeriTelefono) + "," + 
+                    String.join(",", this.Emails) + "," + 
                     this.Etichetta;
         
         return contattoFormatoFile;

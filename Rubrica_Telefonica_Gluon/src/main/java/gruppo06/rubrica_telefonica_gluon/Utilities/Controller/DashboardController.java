@@ -264,15 +264,17 @@ public class DashboardController implements Initializable {
             String nome = nomeField.getText().trim();
             String cognome = cognomeField.getText().trim();
             
-            String telefono1 = telefono1Field.getText().replaceAll("\\s+", ""); //rimuove gli spazi bianchi 
-            String telefono2 = telefono2Field.getText().replaceAll("\\s+", "");
-            String telefono3 = telefono3Field.getText().replaceAll("\\s+", "");
-            
-            String email1 = email1Field.getText().replaceAll("\\s+", "");
-            String email2 = email2Field.getText().replaceAll("\\s+", "");
-            String email3 = email3Field.getText().replaceAll("\\s+", "");
-            
-            String etichetta = etichettaField.getText().trim();
+            String telefono1 = telefono1Field.getText().replaceAll("\\s+", ""); //rimuove gli spazi 
+           
+            String telefono2 = telefono2Field.getText().trim().isEmpty() ? null : telefono2Field.getText().replaceAll("\\s+", "");
+            String telefono3 = telefono3Field.getText().trim().isEmpty() ? null : telefono3Field.getText().replaceAll("\\s+", "");
+
+            String email1 = email1Field.getText().trim().isEmpty() ? null : email1Field.getText().replaceAll("\\s+", "");
+            String email2 = email2Field.getText().trim().isEmpty() ? null : email2Field.getText().replaceAll("\\s+", "");
+            String email3 = email3Field.getText().trim().isEmpty() ? null : email3Field.getText().replaceAll("\\s+", "");
+
+            String etichetta = etichettaField.getText().trim().isEmpty() ? null : etichettaField.getText().trim();
+
 
             // Validazione dati
             if (nome.isEmpty() || cognome.isEmpty() || telefono1.isEmpty()) {
@@ -356,7 +358,7 @@ public class DashboardController implements Initializable {
     // Crea un nuovo Stage per visualizzare i dettagli del contatto
     Stage stage = new Stage();
     stage.setTitle("Dettagli Contatto");
-    stage.setWidth(340);  // impostazione larghezza
+    stage.setWidth(410);  // impostazione larghezza
     stage.setHeight(550); // impostazione altezza
     
     VBox layout = new VBox(15);
@@ -372,15 +374,28 @@ public class DashboardController implements Initializable {
     VBox telefonoBox = new VBox(5);
     telefonoBox.setAlignment(Pos.CENTER); // Allineamento centrale
     
-        // Ottieni i numeri di telefono in modo sicuro, restituendo null se l'indice non è valido
+        // Ottieni i numeri di telefono
         List<String> numeriTelefonoList = contatto.getNumeriTelefono();
-        String telefoni = (numeriTelefonoList.size() > 0) ? numeriTelefonoList.get(0) : null;
+        String telefono1 = numeriTelefonoList.get(0);
+        String telefono2 = numeriTelefonoList.get(1);
+        String telefono3 = numeriTelefonoList.get(2);
 
         // Aggiungi i numeri di telefono al layout se esistono
-        if (telefoni == null)
-            telefonoBox.getChildren().add(creaCampo("Telefono", "Non inseriti"));
+        // Aggiungi i numeri di telefono al layout se esistono
+        if (telefono1 == null)
+            telefonoBox.getChildren().add(creaCampo("Telefono 1", "Non inserito"));
         else
-            telefonoBox.getChildren().add(creaCampo("Telefono", telefoni));
+            telefonoBox.getChildren().add(creaCampo("Telefono 1", telefono1));
+
+        if (telefono2 == null)
+            telefonoBox.getChildren().add(creaCampo("Telefono 2", "Non inserito"));
+        else
+            telefonoBox.getChildren().add(creaCampo("Telefono 2", telefono2));
+
+        if (telefono3 == null)
+            telefonoBox.getChildren().add(creaCampo("Telefono 3", "Non inserito"));
+        else
+            telefonoBox.getChildren().add(creaCampo("Telefono 3", telefono3));
 
         telefonoBox.setPadding(new Insets(10, 0, 0, 0)); // (top, right, bottom, left)
 
@@ -391,13 +406,25 @@ public class DashboardController implements Initializable {
     
         // Ottieni le email, se ci sono
         List<String> emailList = contatto.getEmails();
-        String emails = (emailList.size() > 0) ? emailList.get(0) : null;
+        String email1 = emailList.get(0);
+        String email2 = emailList.get(1);
+        String email3 = emailList.get(2);
         
         // Aggiungi le email al layout se esistono altrimenti specifica che non ci sono
-        if (emails == null) 
-            emailBox.getChildren().add(creaCampo("Email", "Non inserite"));
+        if (email1 == null)
+            emailBox.getChildren().add(creaCampo("Email 1", "Non inserito"));
         else
-            emailBox.getChildren().add(creaCampo("Email", emails));
+            emailBox.getChildren().add(creaCampo("Email 1", email1));
+
+        if (email2 == null)
+            emailBox.getChildren().add(creaCampo("Email 2", "Non inserito"));
+        else
+            emailBox.getChildren().add(creaCampo("Email 2", email2));
+
+        if (email3 == null)
+            emailBox.getChildren().add(creaCampo("Email 3", "Non inserito"));
+        else
+            emailBox.getChildren().add(creaCampo("Email 3", email3));
 
         emailBox.setPadding(new Insets(10, 0, 0, 0)); // (top, right, bottom, left
 
@@ -511,26 +538,43 @@ public class DashboardController implements Initializable {
                 while((line = br.readLine())!=null) {
                      i++;
                     if(i>2){
+                        String[] attributoContatto = line.split(",");
 
-                 String[] dati = line.split(",");
+                        // Estrai i dati obbligatori
+                        String nome = (attributoContatto[0].equals("null")) ? null : attributoContatto[0].trim();
+                        String cognome = (attributoContatto[1].equals("null")) ? null : attributoContatto[1].trim();
 
-                        String nome = (dati.length > 0 && !dati[0].trim().isEmpty()) ? dati[0].trim() : null;
-                        String cognome = (dati.length > 1 && !dati[1].trim().isEmpty()) ? dati[1].trim() : null;
-                        String telefono = (dati.length > 2 && !dati[2].trim().isEmpty()) ? dati[2].trim() : null;
-                        String email = (dati.length > 3 && !dati[3].trim().isEmpty()) ? dati[3].trim() : null;
-                        String etichetta = (dati.length > 4 && !dati[4].trim().isEmpty()) ? dati[4].trim() : null;
+                        // Gestisci il gruppo di numeri di telefono
+                        List<String> phoneNumberList = new ArrayList<>();
+                        String telefono1 = (attributoContatto[2].equals("null")) ? null : attributoContatto[2].trim();
+                        String telefono2 = (attributoContatto[3].equals("null")) ? null : attributoContatto[3].trim();
+                        String telefono3 = (attributoContatto[4].equals("null")) ? null : attributoContatto[4].trim();
 
-                        // Crea un oggetto Contatto anche se alcuni campi sono mancanti
-                        Contatto contatto = new Contatto(
-                            nome != null ? nome : "Nome non disponibile",    // Imposta un nome di default
-                            cognome != null ? cognome : "Cognome non disponibile",  // Imposta un cognome di default
-                            telefono != null ? Arrays.asList(telefono) : new ArrayList<>(),  // Usa una lista vuota se non c'è telefono
-                            email != null ? Arrays.asList(email) : new ArrayList<>(),  // Usa una lista vuota se non c'è email
-                            etichetta != null ? etichetta : " "  // Imposta un'etichetta di default
-                        );
+                        phoneNumberList.add(telefono1);
+                        phoneNumberList.add(telefono2);
+                        phoneNumberList.add(telefono3);
+
+                        // Gestisci il gruppo di email
+                        List<String> emailList = new ArrayList<>();
+                        String email1 = (attributoContatto[5].equals("null")) ? null : attributoContatto[5].trim();
+                        String email2 = (attributoContatto[6].equals("null")) ? null : attributoContatto[6].trim();
+                        String email3 = (attributoContatto[7].equals("null")) ? null : attributoContatto[7].trim();
+
+                        emailList.add(email1);
+                        emailList.add(email2);
+                        emailList.add(email3);
+
+                        // Gestisci l'etichetta (ultimo gruppo)
+                        String etichetta = (attributoContatto[8].equals("null")) ? null : attributoContatto[8];
+                        if(etichetta == null){
+                            System.out.println("UOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+                        }
+                 
+                        //creazione oggetto contatto
+                        Contatto contatto = new Contatto (nome,cognome,phoneNumberList,emailList,etichetta);
 
                         // Aggiungi il contatto alla TreeMap
-                        listaContatti.put((nome != null ? nome : "Nome non disponibile") + " " + (cognome != null ? cognome : "Cognome non disponibile"), contatto);
+                        listaContatti.put(contatto.getNome() + " " + contatto.getCognome(), contatto);
 
                       // Contatto trovato, esci dal ciclo
                     }        
@@ -604,14 +648,21 @@ public class DashboardController implements Initializable {
         
         //Metodi gestione dati
         private void modificaContatto(Contatto contatto, Stage stagePrecedente) {
+            // Crea la finestra
             Stage stage = new Stage();
             stage.setTitle("Dettagli Contatto");
+
+            // GridPane per disporre gli elementi
             GridPane grid = new GridPane();
             grid.setHgap(10);
             grid.setVgap(10);
-            grid.setPadding(new Insets(10));
+            grid.setPadding(new Insets(10)); // Padding interno
+            grid.setAlignment(Pos.CENTER); // Allinea tutti gli elementi al centro
 
-            // Crea una finestra di modifica con i campi già popolati
+            stage.setWidth(410);  // impostazione larghezza
+            stage.setHeight(550); // impostazione altezza
+
+            // Crea i campi di testo con il contenuto predefinito
             TextField nomeField = new TextField(contatto.getNome());
             TextField cognomeField = new TextField(contatto.getCognome());
 
@@ -625,51 +676,76 @@ public class DashboardController implements Initializable {
             TextField emailField2 = new TextField(contatto.getEmails().size() > 1 ? contatto.getEmails().get(1) : "");
             TextField emailField3 = new TextField(contatto.getEmails().size() > 2 ? contatto.getEmails().get(2) : "");
 
+            // Etichetta
             TextField etichettaField = new TextField(contatto.getEtichetta());
 
-            // Aggiungi i campi nella finestra
-            grid.add(new Label("Nome:"), 0, 0);
-            grid.add(nomeField, 1, 0);
-            grid.add(new Label("Cognome:"), 0, 1);
-            grid.add(cognomeField, 1, 1);
-            grid.add(new Label("Telefono 1:"), 0, 2);
-            grid.add(telefonoField1, 1, 2);
-            grid.add(new Label("Telefono 2:"), 0, 3);
-            grid.add(telefonoField2, 1, 3);
-            grid.add(new Label("Telefono 3:"), 0, 4);
-            grid.add(telefonoField3, 1, 4);
-            grid.add(new Label("Email 1:"), 0, 5);
-            grid.add(emailField1, 1, 5);
-            grid.add(new Label("Email 2:"), 0, 6);
-            grid.add(emailField2, 1, 6);
-            grid.add(new Label("Email 3:"), 0, 7);
-            grid.add(emailField3, 1, 7);
-            grid.add(new Label("Etichetta:"), 0, 8);
-            grid.add(etichettaField, 1, 8);
+            // Allinea le etichette e i campi di testo al centro
+            HBox nomeBox = new HBox(new Label("Nome:"), nomeField);
+            nomeBox.setAlignment(Pos.CENTER);
+            HBox.setMargin(nomeBox, new Insets(10)); // Aggiungi margine
 
-            // Crea un pulsante per salvare
+            HBox cognomeBox = new HBox(new Label("Cognome:"), cognomeField);
+            cognomeBox.setAlignment(Pos.CENTER);
+            HBox.setMargin(cognomeBox, new Insets(10));
+
+            HBox telefonoBox1 = new HBox(new Label("Telefono 1:"), telefonoField1);
+            telefonoBox1.setAlignment(Pos.CENTER);
+            HBox.setMargin(telefonoBox1, new Insets(10));
+
+            HBox telefonoBox2 = new HBox(new Label("Telefono 2:"), telefonoField2);
+            telefonoBox2.setAlignment(Pos.CENTER);
+            HBox.setMargin(telefonoBox2, new Insets(10));
+
+            HBox telefonoBox3 = new HBox(new Label("Telefono 3:"), telefonoField3);
+            telefonoBox3.setAlignment(Pos.CENTER);
+            HBox.setMargin(telefonoBox3, new Insets(10));
+
+            HBox emailBox1 = new HBox(new Label("Email 1:"), emailField1);
+            emailBox1.setAlignment(Pos.CENTER);
+            HBox.setMargin(emailBox1, new Insets(10));
+
+            HBox emailBox2 = new HBox(new Label("Email 2:"), emailField2);
+            emailBox2.setAlignment(Pos.CENTER);
+            HBox.setMargin(emailBox2, new Insets(10));
+
+            HBox emailBox3 = new HBox(new Label("Email 3:"), emailField3);
+            emailBox3.setAlignment(Pos.CENTER);
+            HBox.setMargin(emailBox3, new Insets(10));
+
+            HBox etichettaBox = new HBox(new Label("Etichetta:"), etichettaField);
+            etichettaBox.setAlignment(Pos.CENTER);
+            HBox.setMargin(etichettaBox, new Insets(10));
+
+            // Aggiungi le HBox nel GridPane
+            grid.add(nomeBox, 0, 0);
+            grid.add(cognomeBox, 0, 1);
+            grid.add(telefonoBox1, 0, 2);
+            grid.add(telefonoBox2, 0, 3);
+            grid.add(telefonoBox3, 0, 4);
+            grid.add(emailBox1, 0, 5);
+            grid.add(emailBox2, 0, 6);
+            grid.add(emailBox3, 0, 7);
+            grid.add(etichettaBox, 0, 8);
+
+            // Crea un pulsante per salvare con margine
             Button salvaButton = new Button("Salva");
+            salvaButton.setPadding(new Insets(20,20,20,20));  // Padding interno al pulsante
             salvaButton.setOnAction(e -> salvaModifiche(contatto, nomeField, cognomeField, telefonoField1, telefonoField2, telefonoField3, emailField1, emailField2, emailField3, etichettaField, stage));
 
-            // Aggiungi il listener per il tasto Enter per ogni campo di testo
-            nomeField.setOnAction(e -> salvaModifiche(contatto, nomeField, cognomeField, telefonoField1, telefonoField2, telefonoField3, emailField1, emailField2, emailField3, etichettaField, stage));
-            cognomeField.setOnAction(e -> salvaModifiche(contatto, nomeField, cognomeField, telefonoField1, telefonoField2, telefonoField3, emailField1, emailField2, emailField3, etichettaField, stage));
-            telefonoField1.setOnAction(e -> salvaModifiche(contatto, nomeField, cognomeField, telefonoField1, telefonoField2, telefonoField3, emailField1, emailField2, emailField3, etichettaField, stage));
-            telefonoField2.setOnAction(e -> salvaModifiche(contatto, nomeField, cognomeField, telefonoField1, telefonoField2, telefonoField3, emailField1, emailField2, emailField3, etichettaField, stage));
-            telefonoField3.setOnAction(e -> salvaModifiche(contatto, nomeField, cognomeField, telefonoField1, telefonoField2, telefonoField3, emailField1, emailField2, emailField3, etichettaField, stage));
-            emailField1.setOnAction(e -> salvaModifiche(contatto, nomeField, cognomeField, telefonoField1, telefonoField2, telefonoField3, emailField1, emailField2, emailField3, etichettaField, stage));
-            emailField2.setOnAction(e -> salvaModifiche(contatto, nomeField, cognomeField, telefonoField1, telefonoField2, telefonoField3, emailField1, emailField2, emailField3, etichettaField, stage));
-            emailField3.setOnAction(e -> salvaModifiche(contatto, nomeField, cognomeField, telefonoField1, telefonoField2, telefonoField3, emailField1, emailField2, emailField3, etichettaField, stage));
-            etichettaField.setOnAction(e -> salvaModifiche(contatto, nomeField, cognomeField, telefonoField1, telefonoField2, telefonoField3, emailField1, emailField2, emailField3, etichettaField, stage));
+            // Posiziona il pulsante in basso a sinistra
+            HBox salvaBox = new HBox(salvaButton);
+            salvaBox.setAlignment(Pos.BOTTOM_LEFT);  // Allineamento a sinistra in basso
+            HBox.setMargin(salvaBox, new Insets(20)); // Aggiungi margine al pulsante
 
-            // Layout della scena
+            // Aggiungi il layout principale
             VBox layout = new VBox(10);
             layout.setPadding(new Insets(10));
-            layout.getChildren().addAll(grid, salvaButton);
+            layout.getChildren().addAll(grid, salvaBox);
 
             Scene scene = new Scene(layout, 800, 600);
             stage.setScene(scene);
             stage.show();
+
         }
 
         private void salvaModifiche(Contatto contatto, TextField nomeField, TextField cognomeField, 
