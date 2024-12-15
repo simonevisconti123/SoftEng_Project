@@ -1,5 +1,0 @@
-Username = PAS
-
-prova1,n*,1,null,null,null,null,null,null
-Prova3,n°,3,null,null,null,null,null,null
-Prova2,n°,2,null,null,null,null,null,null
