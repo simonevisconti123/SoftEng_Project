@@ -14,4 +14,4 @@ Realizzazione di una rubrica per la gestione dei contatti telefonici e/o mail.
 - Vincenzo Nazzaro - v.nazzaro1@studenti.unisa.it
 
 # Sito web documentazione
-- Tutta la documentazione è navigabile sul sito web: [NotionGroup06Site]([https://lateral-saxophone-9f2.notion.site/Design-GRUPPO-06-150521f00178808f8d42c1da8d99a2a0?pvs=4](https://lateral-saxophone-9f2.notion.site/SOFTWARE-ENGINEERING-PROJECT-Gruppo-06-150521f00178803a86dcef575998703a?pvs=4))
+- Tutta la documentazione è navigabile sul sito web: [NotionGroup06Site](https://lateral-saxophone-9f2.notion.site/SOFTWARE-ENGINEERING-PROJECT-Gruppo-06-150521f00178803a86dcef575998703a?pvs=4)
