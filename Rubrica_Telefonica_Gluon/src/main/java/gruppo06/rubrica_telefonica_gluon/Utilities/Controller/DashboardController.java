@@ -768,7 +768,7 @@ HBox email2Layout = creaCampo("Email n°2", contatto.getEmail2());
             grid.setAlignment(Pos.CENTER); // Allinea tutti gli elementi al centro
 
             stage.setWidth(410);  // impostazione larghezza
-            stage.setHeight(550); // impostazione altezza
+            stage.setHeight(440); // impostazione altezza
 
             // Crea i campi di testo con il contenuto
             TextField nomeField = new TextField(contatto.getNome());
@@ -837,7 +837,8 @@ HBox email2Layout = creaCampo("Email n°2", contatto.getEmail2());
 
             // Crea un pulsante per salvare con margine
             Button salvaButton = new Button("Salva");
-            salvaButton.setPadding(new Insets(20,20,20,20));  // Padding interno al pulsante
+            
+            salvaButton.setPadding(new Insets(10,10,10,10));  // Padding interno al pulsante
             salvaButton.setOnAction(e -> {
                 try {
                     if(nomeField.getText() == null || nomeField.getText().isEmpty() || cognomeField.getText() == null || cognomeField.getText().isEmpty() || telefonoField1.getText() == null || telefonoField1.getText().isEmpty())
@@ -852,7 +853,7 @@ HBox email2Layout = creaCampo("Email n°2", contatto.getEmail2());
 
             // Posiziona il pulsante in basso a sinistra
             HBox salvaBox = new HBox(salvaButton);
-            salvaBox.setAlignment(Pos.BOTTOM_LEFT);  // Allineamento a sinistra in basso
+            salvaBox.setAlignment(Pos.BOTTOM_CENTER);  // Allineamento a sinistra in basso
             HBox.setMargin(salvaBox, new Insets(20)); // Aggiungi margine al pulsante
 
             // Aggiungi il layout principale
